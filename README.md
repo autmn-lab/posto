@@ -1,2 +1,2 @@
-# monitor-bb
+# MBB
 Monitoring of black box systems
