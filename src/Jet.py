@@ -1,10 +1,12 @@
 import os,sys,copy
+import time
 
 PROJECT_ROOT = os.environ['MNTR_BB_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 from Parameters import *
 from lib.GenLog import *
+from lib.TrajValidity import *
 import numpy as np
 import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d.art3d as art3d
@@ -60,7 +62,7 @@ class Jet:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
                 #print(wd,ht)
-                p = plt.Rectangle((lg[0][0][0], lg[0][1][0]), wd, ht, facecolor='none', edgecolor='black',linewidth=0.4,alpha=0.8)
+                p = plt.Rectangle((lg[0][0][0], lg[0][1][0]), wd, ht, facecolor='none', edgecolor='cyan',linewidth=0.4,alpha=0.5)
                 ax.add_patch(p)
                 art3d.pathpatch_2d_to_3d(p, z=lg[1], zdir="z")
 
@@ -72,14 +74,61 @@ class Jet:
     
         plt.show()
 
-    def getLog(initSet,T,K):
-        trajs=Jet.getRandomTrajs(initSet,T,100)
+    def vizTrajsVal(trajsVal,trajsInVal,logUn=None):
+
+        ax = plt.axes(projection='3d')
+        ax.set_xlabel('x')
+        ax.set_ylabel('y')
+        ax.set_zlabel('time')
+
+        if logUn!=None:
+            for lg in logUn:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                p = plt.Rectangle((lg[0][0][0], lg[0][1][0]), wd, ht, facecolor='none', edgecolor='cyan',linewidth=0.4,alpha=0.5)
+                ax.add_patch(p)
+                art3d.pathpatch_2d_to_3d(p, z=lg[1], zdir="z")
+
+        for traj in trajsVal:
+            x=[p[0] for p in traj]
+            y=[p[1] for p in traj]
+            t=list(range(0,len(traj)))
+            ax.plot3D(x, y, t,color='blue')
+
+        for traj in trajsInVal:
+            x=[p[0] for p in traj]
+            y=[p[1] for p in traj]
+            t=list(range(0,len(traj)))
+            ax.plot3D(x, y, t,color='red')
+    
+        plt.show()
+
+    def getLog(initSet,T):
+        trajs=Jet.getRandomTrajs(initSet,T,1)
         
         logger=GenLog(trajs[0])
         log=logger.genLog()
 
         Jet.vizTrajs(trajs,log[0])
 
+    def getValTrajs(initSet,T,K):
+        trajsL=Jet.getRandomTrajs(initSet,T,1)
+        logger=GenLog(trajsL[0])
+        logUn=logger.genLog()[0]
+        #print(logUn[0][0])
+        ts=time.time()
+        valTrajObj=TrajVal(logUn)
+        valTrajs=[]
+        while len(valTrajs)<=1300:
+            trajs=Jet.getRandomTrajs(logUn[0][0],T,100)
+            valTrajsIt,inValTrajsIt=valTrajObj.getValTrajs(trajs)
+            valTrajs=valTrajs+valTrajsIt
+            if len(valTrajs)>=1300:
+                break
+        ts=time.time()-ts
+        print(ts)
+        Jet.vizTrajsVal(valTrajs[:5],inValTrajsIt[:5],logUn)
 
 
     
@@ -92,4 +141,7 @@ T=2000
 K=5
 initState=(x_init,y_init)
 initSet=([0.8,1.2],[0.8,1.2])
-Jet.getLog(initSet,T,K)
+#initSet=([0.8,0.9],[0.8,0.9])
+Jet.getValTrajs(initSet,T,K)
+#Jet.getRandomTrajs(initSet,T,5)
+#Jet.getLog(initSet,T)
