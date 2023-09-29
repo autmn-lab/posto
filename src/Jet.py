@@ -107,6 +107,8 @@ class Jet:
 
     def vizTrajsVal2D(trajsVal,logUn=None,unsafe=0.0,state=0):
 
+        lnWd=2
+
         t=list(range(len(trajsVal[0])))
 
         #print(t)
@@ -115,7 +117,7 @@ class Jet:
 
         for traj in trajsVal:
             x=[p[state] for p in traj]
-            plt.plot(t,x,linewidth=5)
+            plt.plot(t,x,linewidth=lnWd)
 
         if logUn!=None:
             for lg in logUn:
@@ -123,9 +125,50 @@ class Jet:
                 ht=abs(lg[0][1][1]-lg[0][1][0])
                 #print(wd,ht)
                 #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
-                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=5)
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
 
-        p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=5,linestyle='dashed')
+        p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
+
+        plt.show()
+
+    def vizTrajsSafeUnsafe2D(safeTrajs,unsafeTrajs,safeSamps,unsafeSamps,unsafe=0.0,state=0):
+
+        lnWd=4
+
+        if len(safeTrajs)>0:
+            t=list(range(len(safeTrajs[0])))
+        else:
+            t=list(range(len(unsafeTrajs[0])))
+
+        #print(t)
+        plt.xlabel("Time")
+        plt.ylabel("State-"+str(state))
+
+        for traj in safeTrajs:
+            x=[p[state] for p in traj]
+            plt.plot(t,x,linewidth=lnWd,color='blue')
+        
+        for traj in unsafeTrajs:
+            x=[p[state] for p in traj]
+            plt.plot(t,x,linewidth=lnWd,color='red',linestyle='dashdot',alpha=0.8)
+
+        if safeSamps!=None:
+            for lg in safeSamps:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
+        
+        if unsafeSamps!=None:
+            for lg in unsafeSamps:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='brown',linewidth=lnWd)
+
+        p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
 
         plt.show()
 
@@ -163,18 +206,26 @@ class Jet:
         logUn=logger.genLog()[0]
         K=1300
         ts=time.time()
-        unsafe=0
+        unsafe=-0.121
         state=0
         op='le'
         validTrajs=Jet.getValidTrajs(initSet,T,K,logUn)
         ts=time.time()-ts
         print("Time taken to generate ", len(validTrajs)," valid trajectories: ",ts)
-        Jet.vizTrajsVal2D(validTrajs,logUn,unsafe,state)
+        #Jet.vizTrajsVal2D(validTrajs,logUn,unsafe,state)
+
+        ts=time.time()
         safeTrajObj=TrajSafety([state,op,unsafe])
         (safeTrajs,unsafeTrajs)=safeTrajObj.getSafeUnsafeTrajs(validTrajs)
-        print(len(safeTrajs),len(unsafeTrajs))
         (safeSamps,unsafeSamps)=safeTrajObj.getSafeUnsafeLog(logUn)
-        print(len(safeSamps),len(unsafeSamps))
+        ts=time.time()-ts
+
+        print("[Trajs] Safe, Unsafe: ",len(safeTrajs),len(unsafeTrajs))
+        print("[Log] Safe, Unsafe: ",len(safeSamps),len(unsafeSamps))
+        print("Time taken to filter the trajs/logs: ",ts)
+
+        if len(unsafeTrajs)>0 and len(safeTrajs)>0:
+            Jet.vizTrajsSafeUnsafe2D([safeTrajs[0]],[unsafeTrajs[0]],safeSamps,unsafeSamps,unsafe,state)
         
 
 

@@ -51,7 +51,7 @@ class TrajSafety:
         K=len(log)
         for k in range(K):
             sample=log[k]
-            if self.isSampleSafe(sample)==False:
+            if self.isSampleSafe(sample)!=True:
                 unsafeSamps.append(sample)
             else:
                 safeSamps.append(sample)
@@ -73,11 +73,11 @@ class TrajSafety:
         if self.inequal=='ge':
                 if smUb>=self.const:
                     return False
-                elif self.inequal=='le':
-                    if smLb<=self.const:
-                        return False
-                else:
-                    print("FATAL ERROR: Wrong operator!")
-                    exit(0)
+        elif self.inequal=='le':
+            if smLb<=self.const:
+                return False
+        else:
+            print("FATAL ERROR: Wrong operator!")
+            exit(0)
         return True
                 
