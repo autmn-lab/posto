@@ -104,6 +104,30 @@ class Jet:
     
         plt.show()
 
+    def vizTrajsVal2D(trajsVal,logUn=None,unsafe=0.19,state=1):
+
+        t=list(range(len(trajsVal[0])))
+
+        #print(t)
+        plt.xlabel("Time")
+        plt.ylabel("State-"+str(state))
+
+        for traj in trajsVal:
+            x=[p[state] for p in traj]
+            plt.plot(t,x,linewidth=0.2)
+
+        if logUn!=None:
+            for lg in logUn:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=5)
+
+        p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=0.5,linestyle='dashed')
+
+        plt.show()
+
     def getLog(initSet,T):
         trajs=Jet.getRandomTrajs(initSet,T,1)
         
@@ -127,8 +151,9 @@ class Jet:
             if len(valTrajs)>=1300:
                 break
         ts=time.time()-ts
-        print(ts)
-        Jet.vizTrajsVal(valTrajs[:5],inValTrajsIt[:5],logUn)
+        print("Time: ",ts)
+        #Jet.vizTrajsVal(valTrajs[:5],inValTrajsIt[:5],logUn)
+        Jet.vizTrajsVal2D(valTrajs,logUn)
 
 
     
