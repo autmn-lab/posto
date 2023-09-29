@@ -7,6 +7,7 @@ sys.path.append(PROJECT_ROOT)
 from Parameters import *
 from lib.GenLog import *
 from lib.TrajValidity import *
+from lib.TrajSafety import *
 import numpy as np
 import matplotlib.pyplot as plt
 import mpl_toolkits.mplot3d.art3d as art3d
@@ -104,7 +105,7 @@ class Jet:
     
         plt.show()
 
-    def vizTrajsVal2D(trajsVal,logUn=None,unsafe=0.19,state=1):
+    def vizTrajsVal2D(trajsVal,logUn=None,unsafe=0.0,state=0):
 
         t=list(range(len(trajsVal[0])))
 
@@ -114,7 +115,7 @@ class Jet:
 
         for traj in trajsVal:
             x=[p[state] for p in traj]
-            plt.plot(t,x,linewidth=0.2)
+            plt.plot(t,x,linewidth=5)
 
         if logUn!=None:
             for lg in logUn:
@@ -124,7 +125,7 @@ class Jet:
                 #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=5)
 
-        p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=0.5,linestyle='dashed')
+        p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=5,linestyle='dashed')
 
         plt.show()
 
@@ -136,24 +137,48 @@ class Jet:
 
         Jet.vizTrajs(trajs,log[0])
 
-    def getValTrajs(initSet,T,K):
-        trajsL=Jet.getRandomTrajs(initSet,T,1)
-        logger=GenLog(trajsL[0])
-        logUn=logger.genLog()[0]
+    def getValidTrajs(initSet,T,K,logUn):
+        #trajsL=Jet.getRandomTrajs(initSet,T,1)
+        #logger=GenLog(trajsL[0])
+        #logUn=logger.genLog()[0]
         #print(logUn[0][0])
-        ts=time.time()
-        valTrajObj=TrajVal(logUn)
+        #ts=time.time()
+        valTrajObj=TrajValidity(logUn)
         valTrajs=[]
-        while len(valTrajs)<=1300:
+        while len(valTrajs)<=K:
             trajs=Jet.getRandomTrajs(logUn[0][0],T,100)
             valTrajsIt,inValTrajsIt=valTrajObj.getValTrajs(trajs)
             valTrajs=valTrajs+valTrajsIt
-            if len(valTrajs)>=1300:
+            if len(valTrajs)>=K:
                 break
-        ts=time.time()-ts
-        print("Time: ",ts)
+        #ts=time.time()-ts
+        #print("Time: ",ts)
         #Jet.vizTrajsVal(valTrajs[:5],inValTrajsIt[:5],logUn)
-        Jet.vizTrajsVal2D(valTrajs,logUn)
+        #Jet.vizTrajsVal2D(valTrajs,logUn)
+        return valTrajs
+
+    def checkSafety(initSet,T):
+        trajsL=Jet.getRandomTrajs(initSet,T,1)
+        logger=GenLog(trajsL[0])
+        logUn=logger.genLog()[0]
+        K=1300
+        ts=time.time()
+        unsafe=0
+        state=0
+        op='le'
+        validTrajs=Jet.getValidTrajs(initSet,T,K,logUn)
+        ts=time.time()-ts
+        print("Time taken to generate ", len(validTrajs)," valid trajectories: ",ts)
+        Jet.vizTrajsVal2D(validTrajs,logUn,unsafe,state)
+        safeTrajObj=TrajSafety([state,op,unsafe])
+        (safeTrajs,unsafeTrajs)=safeTrajObj.getSafeUnsafeTrajs(validTrajs)
+        print(len(safeTrajs),len(unsafeTrajs))
+        (safeSamps,unsafeSamps)=safeTrajObj.getSafeUnsafeLog(logUn)
+        print(len(safeSamps),len(unsafeSamps))
+        
+
+
+
 
 
     
@@ -167,6 +192,7 @@ K=5
 initState=(x_init,y_init)
 initSet=([0.8,1.2],[0.8,1.2])
 #initSet=([0.8,0.9],[0.8,0.9])
-Jet.getValTrajs(initSet,T,K)
+#Jet.getValidTrajs(initSet,T,K)
 #Jet.getRandomTrajs(initSet,T,5)
 #Jet.getLog(initSet,T)
+Jet.checkSafety(initSet,T)

@@ -5,7 +5,7 @@ sys.path.append(PROJECT_ROOT)
 
 from Parameters import *
 
-class TrajVal:
+class TrajValidity:
 
     def __init__(self,log):
         self.log=log
