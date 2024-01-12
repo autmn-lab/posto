@@ -24,8 +24,9 @@ class GenLog:
                 for st in range(self.nState):
                     #pert=random.uniform(ep,2*ep)
                     #pert=random.uniform(ep/2,ep*2)
-                    pert=random.uniform(ep/2,ep)
+                    #pert=random.uniform(ep/2,ep)
                     #pert=np.random.normal(ep-0.001,0.005)
+                    pert=ep
                     unState.append([self.traj[t][st]-pert,self.traj[t][st]+pert])
                 logUn.append((unState,t))
 

@@ -81,3 +81,44 @@ class TrajSafety:
             exit(0)
         return True
                 
+
+class TrajReach:
+    def __init__(self,unsafeConstraint):
+        self.state=unsafeConstraint[0]
+        self.inequal=unsafeConstraint[1]
+        self.const=unsafeConstraint[2]
+
+    
+    def getSafeUnsafeTrajs(self,trajs):
+        safeTrajs=[]
+        unsafeTrajs=[]
+        for traj in trajs:
+            (safeFlag,tViolate)=self.isTrajSafe(traj)
+            if safeFlag==False:
+                unsafeTrajs.append(traj)
+            else:
+                safeTrajs.append(traj)
+        return (safeTrajs,unsafeTrajs)
+    
+    def isTrajsSafe(self,trajs):
+        for traj in trajs:
+            (safeFlag,tViolate)=self.isTrajSafe(traj)
+            if safeFlag==False:
+                return (traj,tViolate)
+        return (True,-1)
+    
+    def isTrajSafe(self,traj):
+        T=len(traj)
+        #for t in range(T):
+        pt=traj[-1][self.state]
+        if self.inequal=='ge':
+            if pt>=self.const:
+                return (True,-1)
+        elif self.inequal=='le':
+            if pt<=self.const:
+                return (True,-1)
+        else:
+            print("FATAL ERROR: Wrong operator!")
+            exit(0)
+        return (False,-1)
+                

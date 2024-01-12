@@ -239,7 +239,7 @@ class Jet:
 x_init=0.8
 y_init=0.8
 T=2000
-K=5
+K=1200
 initState=(x_init,y_init)
 initSet=([0.8,1.2],[0.8,1.2])
 #initSet=([0.8,0.9],[0.8,0.9])
