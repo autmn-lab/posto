@@ -57,7 +57,7 @@ class Jet:
         ax = plt.axes(projection='3d')
         ax.set_xlabel('x',fontsize=20,fontweight='bold')
         ax.set_ylabel('y',fontsize=20,fontweight='bold')
-        ax.set_zlabel('time',fontsize=20,fontweight='bold')
+        ax.set_zlabel('time',fontsize=8,fontweight='bold')
 
         if logUn!=None:
             for lg in logUn:
@@ -85,7 +85,7 @@ class Jet:
         ax = plt.axes(projection='3d')
         ax.set_xlabel('x',fontsize=20,fontweight='bold')
         ax.set_ylabel('y',fontsize=20,fontweight='bold')
-        ax.set_zlabel('time',fontsize=20,fontweight='bold')
+        ax.set_zlabel('time',fontsize=8,fontweight='bold')
 
         if logUn!=None:
             for lg in logUn:
@@ -180,7 +180,7 @@ class Jet:
             plt.show()
         plt.clf()
 
-    def vizTrajsSafeUnsafe2D(safeTrajs,unsafeTrajs,safeSamps,unsafeSamps,unsafe=0.0,state=0):
+    def vizTrajsSafeUnsafe2D(safeTrajs,unsafeTrajs,safeSamps,unsafeSamps,unsafe=0.0,state=0,save=False,name="Untitled"):
 
         lnWd=2
 
@@ -219,7 +219,45 @@ class Jet:
 
         p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
 
-        plt.show()
+        if save:
+            plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
+        else:
+            plt.show()
+        plt.clf()
+
+    def vizLogsSafeUnsafe2D(T,safeSamps,unsafeSamps,unsafe=0.0,state=0,save=False,name="Untitled"):
+
+        lnWd=2
+
+        t=list(range(T))
+
+        #print(t)
+        plt.xlabel("Time",fontsize=20,fontweight='bold')
+        plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
+
+        if safeSamps!=None:
+            for lg in safeSamps:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
+        
+        if unsafeSamps!=None:
+            for lg in unsafeSamps:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='brown',linewidth=lnWd)
+
+        p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
+
+        if save:
+            plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
+        else:
+            plt.show()
+        plt.clf()
 
     def getLog(initSet,T):
         trajs=Jet.getRandomTrajs(initSet,T,1)
@@ -294,7 +332,7 @@ class Jet:
         unsafeTrajs=[]
         safeTrajObj=TrajSafety([state,op,unsafe])
         (safeSamps,unsafeSamps)=safeTrajObj.getSafeUnsafeLog(logUn)
-        if len(unsafeSamps)==0 or True:
+        if len(unsafeSamps)==0 or False:
             while len(valTrajs)<=K:
                 trajs=Jet.getRandomTrajs(logUn[0][0],T,100)
                 totTrajs+=1
@@ -321,7 +359,7 @@ class Jet:
         print("Total Trajectories Generated: ",totTrajs*100,"; Valid Trajectories: ",len(valTrajs))
         return (ts,isSafe)
         
-    def vizVaryC(cList,sList,tList):
+    def vizVaryC(cList,sList,tList,save=False,name="Untitled"):
         plt.xlabel(r'$c$',fontsize=20,fontweight = 'bold')
         plt.ylabel(r'Time taken',fontsize=20,fontweight = 'bold')
         L=len(cList)
@@ -334,7 +372,11 @@ class Jet:
             else:
                 plt.scatter(cList[i], tList[i], s=350, c='red')
         
-        plt.show()
+        if save:
+            plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
+        else:
+            plt.show()
+        plt.clf()
 
     def checkSafety(initSet,T,unsafe,state,op):
         ts=time.time()
@@ -351,7 +393,7 @@ class Jet:
         unsafeTrajs=[]
         safeTrajObj=TrajSafety([state,op,unsafe])
         (safeSamps,unsafeSamps)=safeTrajObj.getSafeUnsafeLog(logUn)
-        if len(unsafeSamps)==0 or True:
+        if len(unsafeSamps)==0 or False:
             while len(valTrajs)<=K:
                 trajs=Jet.getRandomTrajs(logUn[0][0],T,100)
                 totTrajs+=1
@@ -376,10 +418,13 @@ class Jet:
         print("[Trajs] Safe, Unsafe: ",len(safeTrajs),len(unsafeTrajs))
         print("[Log] Safe, Unsafe: ",len(safeSamps),len(unsafeSamps))
         print("Total Trajectories Generated: ",totTrajs*100,"; Valid Trajectories: ",len(valTrajs))
+
+        if len(unsafeSamps)>0:
+            Jet.vizLogsSafeUnsafe2D(T,safeSamps,unsafeSamps,unsafe,state,save=True,name="JetSafeUnsafeLogs")
         
         if len(unsafeTrajs)>0 and len(safeTrajs)>0:
             #print("A")
-            Jet.vizTrajsSafeUnsafe2D([safeTrajs[0]],[unsafeTrajs[0]],safeSamps,unsafeSamps,unsafe,state)
+            Jet.vizTrajsSafeUnsafe2D([safeTrajs[0]],[unsafeTrajs[0]],safeSamps,unsafeSamps,unsafe,state,save=True,name="JetSafeUnsafeTrajs")
         elif len(safeTrajs)>0 and len(unsafeTrajs)==0:
             #print("B")
             Jet.vizTrajsVal2D(safeTrajs,logUn,unsafe,state,save=True,name="JetSafeTrajs")
@@ -398,8 +443,8 @@ class Jet:
         logger=GenLog(trajsL[0])
         logUn=logger.genLog()[0]
         Jet.vizTrajs(trajsL,logUn,save=True,name="JetLog3D")
-        Jet.vizTrajsVal2D(trajsL,logUn,unsafe=None,state=0,save=True,name="JetLogS0")
-        Jet.vizTrajsVal2D(trajsL,logUn,unsafe=1.3,state=1,save=True,name="JetLogS1")
+        Jet.vizTrajsVal2D(trajsL,logUn,unsafe=-0.10,state=0,save=True,name="JetLogS0")
+        Jet.vizTrajsVal2D(trajsL,logUn,unsafe=None,state=1,save=True,name="JetLogS1")
     
     def showValidTrajs(initSet,T,K):
         trajsL=Jet.getRandomTrajs(initSet,T,1)
@@ -418,8 +463,8 @@ class Jet:
         ts=time.time()-ts
         print("Time taken: ",ts)
         Jet.vizTrajsVal(valTrajs[:5],inValTrajsIt[:5],logUn,save=True,name="JetValTrajs")
-        Jet.vizTrajsValInVal2D(valTrajs[:1],inValTrajsIt[:1],logUn,unsafe=None,state=0,save=True,name="JetValTrajsS0")
-        Jet.vizTrajsValInVal2D(valTrajs[:1],inValTrajsIt[:1],logUn,unsafe=1.3,state=1,save=True,name="JetValTrajsS1")
+        Jet.vizTrajsValInVal2D(valTrajs[:1],inValTrajsIt[:1],logUn,unsafe=-0.10,state=0,save=True,name="JetValTrajsS0")
+        Jet.vizTrajsValInVal2D(valTrajs[:1],inValTrajsIt[:1],logUn,unsafe=None,state=1,save=True,name="JetValTrajsS1")
 
     def varyC(initSet,T,unsafe,state,op):
         cList=[0.6,0.7,0.8,0.9,0.99]
@@ -434,7 +479,7 @@ class Jet:
 
         print(tList)
         print(sList)
-        Jet.vizVaryC(cList,sList,tList)
+        Jet.vizVaryC(cList,sList,tList,save=True,name="JetVaryC")
 
 
 
@@ -461,12 +506,12 @@ initSet=([0.8,1],[0.8,1])
 
 ########### Results ########### 
 
-unsafe=-0.12
+unsafe=-0.10
 state=0
 op='le'
 
-Jet.showBehavior(initSet,T)
+#Jet.showBehavior(initSet,T)
 #Jet.showLogGeneration(initSet,T)
 #Jet.showValidTrajs(initSet,T,K=20)
 #Jet.checkSafety(initSet,T,unsafe,state,op)
-#Jet.varyC(initSet,T,unsafe,state,op)
+Jet.varyC(initSet,T,unsafe,state,op)
