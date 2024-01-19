@@ -8,8 +8,10 @@ from Parameters import *
 from lib.GenLog import *
 from lib.TrajValidity import *
 from lib.TrajSafety import *
+from lib.JFBF import *
 import numpy as np
 import math
+
 
 import tensorflow as tf
 #from tensorflow.keras.models import model_from_yaml,load_model
@@ -56,15 +58,15 @@ class MC:
         #MC.vizTrajs(trajs)
         return trajs
 
-    def vizTrajs(trajsVal,logUn=None,unsafe=0.8,goal=0.6,state=0):
+    def vizTrajs2(trajsVal,logUn=None,unsafe=0.8,goal=0.6,state=0,save=False,name="Untitled"):
 
         lnWd=2
 
         t=list(range(len(trajsVal[0])))
 
         #print(t)
-        plt.xlabel("Time")
-        plt.ylabel("Position")
+        plt.xlabel("Time",fontsize=20,fontweight='bold')
+        plt.ylabel("Position",fontsize=20,fontweight='bold')
 
         for traj in trajsVal:
             x=[p[state] for p in traj]
@@ -81,7 +83,70 @@ class MC:
         #p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
         p = plt.plot(t, [goal]*len(t),color='green',linewidth=lnWd,linestyle='dashed')
 
-        plt.show()
+        if save:
+            plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
+        else:
+            plt.show()
+        plt.clf()
+
+    def vizTrajs(trajs,logUn=None,save=False,name="Untitled"):
+
+        ax = plt.axes(projection='3d')
+        ax.set_xlabel('p',fontsize=20,fontweight='bold')
+        ax.set_ylabel('v',fontsize=20,fontweight='bold')
+        ax.set_zlabel('time',fontsize=8,fontweight='bold')
+
+        if logUn!=None:
+            for lg in logUn:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                p = plt.Rectangle((lg[0][0][0], lg[0][1][0]), wd, ht, facecolor='none', edgecolor='black',linewidth=0.4,alpha=1)
+                ax.add_patch(p)
+                art3d.pathpatch_2d_to_3d(p, z=lg[1], zdir="z")
+
+        for traj in trajs:
+            x=[p[0] for p in traj]
+            y=[p[1] for p in traj]
+            t=list(range(0,len(traj)))
+            ax.plot3D(x, y, t)
+    
+        if save:
+            plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
+        else:
+            plt.show()
+        plt.clf()
+
+    def vizTrajsVal2D(trajsVal,logUn=None,unsafe=None,state=0,save=False,name="Untitled"):
+
+        lnWd=2
+
+        t=list(range(len(trajsVal[0])))
+
+        #print(t)
+        plt.xlabel("Time",fontsize=20,fontweight='bold')
+        plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
+
+        for traj in trajsVal:
+            x=[p[state] for p in traj]
+            plt.plot(t,x,linewidth=lnWd)
+
+        if logUn!=None:
+            for lg in logUn:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
+
+        if unsafe!=None:
+            p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
+
+        if save:
+            plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
+        else:
+            plt.show()
+        plt.clf()
 
     def getLog(initSet,T):
         trajs=MC.getRandomTrajs(initSet,T,1)
@@ -121,10 +186,10 @@ class MC:
         #VanderPol.vizTrajsVal2D(valTrajs,logUn,unsafe=2.9,state=0)
         return valTrajs
     
-    def checkSafety(initSet,T):
+    def checkSafety2(initSet,T):
         trajsL=MC.getRandomTrajs(initSet,T,1)
-        #print(trajsL[0])
-        #exit(0)
+        print(trajsL[0])
+        exit(0)
         logger=GenLog(trajsL[0])
         logUn=logger.genLog()[0]
         MC.vizTrajs(trajsL,logUn)
@@ -192,8 +257,38 @@ class MC:
 
         plt.show()
 
+    def vizTrajsVal2D(trajsVal,logUn=None,unsafe=None,state=0,save=False,name="Untitled"):
+
+        lnWd=2
+
+        t=list(range(len(trajsVal[0])))
+
+        #print(t)
+        plt.xlabel("Time",fontsize=20,fontweight='bold')
+        plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
+
+        for traj in trajsVal:
+            x=[p[state] for p in traj]
+            plt.plot(t,x,linewidth=lnWd)
+
+        if logUn!=None:
+            for lg in logUn:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
+
+        if unsafe!=None:
+            p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
+
+        if save:
+            plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
+        else:
+            plt.show()
+        plt.clf()
     
-    def vizTrajsVal(trajsVal,trajsInval,logUn=None,unsafe=0.8,goal=0.6,state=0):
+    def vizTrajsVal2(trajsVal,trajsInval,logUn=None,unsafe=0.8,goal=0.6,state=0):
 
         lnWd=2
 
@@ -224,6 +319,75 @@ class MC:
 
         plt.show()
     
+    def vizTrajsVal(trajsVal,trajsInVal,logUn=None,save=False,name="Untitled"):
+
+        ax = plt.axes(projection='3d')
+        ax.set_xlabel('x',fontsize=20,fontweight='bold')
+        ax.set_ylabel('y',fontsize=20,fontweight='bold')
+        ax.set_zlabel('time',fontsize=8,fontweight='bold')
+
+        if logUn!=None:
+            for lg in logUn:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                p = plt.Rectangle((lg[0][0][0], lg[0][1][0]), wd, ht, facecolor='none', edgecolor='black',linewidth=0.4,alpha=0.5)
+                ax.add_patch(p)
+                art3d.pathpatch_2d_to_3d(p, z=lg[1], zdir="z")
+
+        for traj in trajsVal:
+            x=[p[0] for p in traj]
+            y=[p[1] for p in traj]
+            t=list(range(0,len(traj)))
+            ax.plot3D(x, y, t,color='blue')
+
+        for traj in trajsInVal:
+            x=[p[0] for p in traj]
+            y=[p[1] for p in traj]
+            t=list(range(0,len(traj)))
+            ax.plot3D(x, y, t,color='red',alpha=0.35)
+    
+        if save:
+            plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
+        else:
+            plt.show()
+        plt.clf()
+
+    def vizTrajsValInVal2D(trajsVal,inValTrajs,logUn=None,unsafe=None,state=0,save=False,name="Untitled"):
+
+        lnWd=2
+
+        t=list(range(len(trajsVal[0])))
+
+        #print(t)
+        plt.xlabel("Time",fontsize=20,fontweight='bold')
+        plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
+
+        for traj in trajsVal:
+            x=[p[state] for p in traj]
+            plt.plot(t,x,linewidth=lnWd,color='blue')
+
+        for traj in inValTrajs:
+            x=[p[state] for p in traj]
+            plt.plot(t,x,linewidth=lnWd,color='magenta')
+
+        if logUn!=None:
+            for lg in logUn:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
+
+        if unsafe!=None:
+            p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
+
+        if save:
+            plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
+        else:
+            plt.show()
+        plt.clf()
+
     def controllerNN(p,v):
         model = tf.keras.models.Sequential()
         model.add(tf.keras.Input(shape=(2,)))
@@ -669,7 +833,7 @@ class MC:
                  1.9995315074920654],
              [ 0.04001681134104729,
                -1.999599814414978]]
-        ).transpose()
+        )
         layer_h1_bias=np.array(
             [
                 -0.07837510108947754,
@@ -968,7 +1132,7 @@ class MC:
                     , -0.4482851028442383
                 ]
             ]
-        ).transpose()
+        )
         layer_h2_bias=np.array(
             [
                 -0.06690079718828201,
@@ -1011,14 +1175,13 @@ class MC:
                 , 3.3061230182647705
                 , 3.380592107772827
             ]
-        ).transpose()
+        )
         layer_op_bias=np.array([-2.083979368209839])
         #print(layer_op.weights)
 
         ip=np.array([
             [p, v]
         ])
-
 
         #print(layer_h1_wt.transpose().shape,ip.transpose().shape,layer_h1_bias.transpose().shape)
         #print(layer_op_wt.transpose())
@@ -1027,16 +1190,196 @@ class MC:
         #print(ip.trasnpose)
         #exit(0)
         #l1_op=np.matmul(layer_h1_wt.transpose(),ip.transpose())
-        l1_op=np.matmul(layer_h1_wt.transpose(),ip.reshape(2,1))+layer_h1_bias.reshape(16,1)
-        l2_op=np.matmul(layer_h2_wt.transpose(),l1_op)+layer_h2_bias.reshape(16,1)
-        op=np.matmul(layer_op_wt.transpose(),l2_op)+layer_op_bias.reshape(1,1)
+        l1_op=np.matmul(layer_h1_wt,ip.reshape(2,1))+layer_h1_bias.reshape(16,1)
+        # apply sigmoid to l1_op
+        l1_op_sig=MC.sig(l1_op)
+        l2_op=np.matmul(layer_h2_wt,l1_op_sig)+layer_h2_bias.reshape(16,1)
+        # apply sigmoid to l2_op
+        l2_op_sig=MC.sig(l2_op)
+        op=np.matmul(layer_op_wt,l2_op)+layer_op_bias.reshape(1,1)
+        # apply tanh to l1_op
+        op_tanh=np.tanh(op)
         #print(op.shape)
         #print(op.item())
         #exit()
         #print(float(y))
 
-        return op.item()
+        return op_tanh.item()
     
+    def sig(X):
+        l=X.shape[0]
+        Y=np.zeros((l,1))
+        for i in range(l):
+            Y[i]=1/(1 + np.exp(-X[i]))
+        return Y 
+    
+    def showBehavior(initSet,T):
+        trajsL=MC.getRandomTrajs(initSet,T,50)
+        MC.vizTrajs(trajsL,save=True,name="MCBehavior")
+
+    def showLogGeneration(initSet,T):
+        trajsL=MC.getRandomTrajs(initSet,T,1)
+        logger=GenLog(trajsL[0])
+        logUn=logger.genLog()[0]
+        MC.vizTrajs(trajsL,logUn,save=True,name="MCLog3D")
+        MC.vizTrajsVal2D(trajsL,logUn,unsafe=None,state=0,save=True,name="MCLogS0")
+        MC.vizTrajsVal2D(trajsL,logUn,unsafe=0.1,state=1,save=True,name="MCLogS1")
+
+    def showValidTrajs(initSet,T,K):
+        trajsL=MC.getRandomTrajs(initSet,T,1)
+        logger=GenLog(trajsL[0])
+        logUn=logger.genLog()[0]
+    
+        ts=time.time()
+        valTrajObj=TrajValidity(logUn)
+        valTrajs=[]
+        while len(valTrajs)<=K:
+            trajs=MC.getRandomTrajs(logUn[0][0],T,10)
+            valTrajsIt,inValTrajsIt=valTrajObj.getValTrajs(trajs)
+            valTrajs=valTrajs+valTrajsIt
+            print(len(valTrajs))
+            if len(valTrajs)>=K:
+                break
+        ts=time.time()-ts
+        print("Time taken: ",ts)
+        MC.vizTrajsVal(valTrajs[:5],inValTrajsIt[:5],logUn,save=True,name="MCValTrajs")
+        MC.vizTrajsValInVal2D(valTrajs[:1],inValTrajsIt[:1],logUn,unsafe=None,state=0,save=True,name="MCValTrajsS0")
+        MC.vizTrajsValInVal2D(valTrajs[:1],inValTrajsIt[:1],logUn,unsafe=None,state=1,save=True,name="MCValTrajsS1")
+
+    def vizLogsSafeUnsafe2D(T,safeSamps,unsafeSamps,unsafe=0.0,state=0,save=False,name="Untitled"):
+
+        lnWd=2
+
+        t=list(range(T))
+
+        #print(t)
+        plt.xlabel("Time",fontsize=20,fontweight='bold')
+        plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
+
+        if safeSamps!=None:
+            for lg in safeSamps:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
+        
+        if unsafeSamps!=None:
+            for lg in unsafeSamps:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='brown',linewidth=lnWd)
+
+        p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
+
+        if save:
+            plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
+        else:
+            plt.show()
+        plt.clf()
+
+    def vizTrajsSafeUnsafe2D(safeTrajs,unsafeTrajs,safeSamps,unsafeSamps,unsafe=0.0,state=0,save=False,name="Untitled"):
+
+        lnWd=2
+
+        if len(safeTrajs)>0:
+            t=list(range(len(safeTrajs[0])))
+        else:
+            t=list(range(len(unsafeTrajs[0])))
+
+        #print(t)
+        plt.xlabel("Time",fontsize=20,fontweight='bold')
+        plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
+
+        for traj in safeTrajs:
+            x=[p[state] for p in traj]
+            plt.plot(t,x,linewidth=lnWd,color='blue')
+        
+        for traj in unsafeTrajs:
+            x=[p[state] for p in traj]
+            plt.plot(t,x,linewidth=lnWd,color='red',linestyle='dashdot',alpha=0.8)
+
+        if safeSamps!=None:
+            for lg in safeSamps:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
+        
+        if unsafeSamps!=None:
+            for lg in unsafeSamps:
+                wd=abs(lg[0][0][1]-lg[0][0][0])
+                ht=abs(lg[0][1][1]-lg[0][1][0])
+                #print(wd,ht)
+                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
+                p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='brown',linewidth=lnWd)
+
+        p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
+
+        if save:
+            plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
+        else:
+            plt.show()
+        plt.clf()
+
+    def checkSafety(initSet,T,unsafe,state,op):
+        ts=time.time()
+        trajsL=MC.getRandomTrajs(initSet,T,1)
+        logger=GenLog(trajsL[0])
+        logUn=logger.genLog()[0]
+        K=JFB(B,c).getNumberOfSamples()
+        isSafe=True
+        totTrajs=0
+        valTrajObj=TrajValidity(logUn)
+        valTrajs=[]
+        safeTrajs=[]
+        unsafeTrajs=[]
+        safeTrajObj=TrajSafety([state,op,unsafe])
+        (safeSamps,unsafeSamps)=safeTrajObj.getSafeUnsafeLog(logUn)
+        if len(unsafeSamps)==0 or False:
+            while len(valTrajs)<=K:
+                trajs=MC.getRandomTrajs(logUn[0][0],T,100)
+                totTrajs+=1
+                valTrajsIt,inValTrajsIt=valTrajObj.getValTrajs(trajs)
+                print(totTrajs*100,len(valTrajs))
+                # Check safety of valTrajsIt
+                (safeTrajs,unsafeTrajs)=safeTrajObj.getSafeUnsafeTrajs(valTrajsIt)
+                if len(unsafeTrajs)>0:
+                    isSafe=False
+                    break
+                ############################
+
+                valTrajs=valTrajs+valTrajsIt
+                if len(valTrajs)>=K:
+                    break
+        else:
+            isSafe=False
+        
+        ts=time.time()-ts
+        print("Time Taken: ",ts)
+        print("Safety: ",isSafe)
+        print("[Trajs] Safe, Unsafe: ",len(safeTrajs),len(unsafeTrajs))
+        print("[Log] Safe, Unsafe: ",len(safeSamps),len(unsafeSamps))
+        print("Total Trajectories Generated: ",totTrajs*100,"; Valid Trajectories: ",len(valTrajs))
+        
+        
+        if len(unsafeSamps)>0:
+            MC.vizLogsSafeUnsafe2D(T,safeSamps,unsafeSamps,unsafe,state,save=True,name="VanderPolSafeUnsafeLogs")
+        
+        if len(unsafeTrajs)>0 and len(safeTrajs)>0:
+            #print("A")
+            MC.vizTrajsSafeUnsafe2D([safeTrajs[0]],[unsafeTrajs[0]],safeSamps,unsafeSamps,unsafe,state,save=True,name="MCSafeUnsafeTrajs")
+        elif len(safeTrajs)>0 and len(unsafeTrajs)==0:
+            #print("B")
+            MC.vizTrajsVal2D(safeTrajs,logUn,unsafe,state,save=True,name="MCSafeTrajs")
+        elif len(unsafeTrajs)>0:
+            #print("C")
+            MC.vizTrajsVal2D(unsafeTrajs,logUn,unsafe,state,save=True,name="MCUnsafeTrajs")
+
+
     def loadControllerYAML(pathMC):
         '''with tf.io.gfile.GFile(pathMC, 'r') as yaml_file:
             yaml_string = yaml_file.read()'''
@@ -1068,9 +1411,22 @@ pathMC=PROJECT_ROOT+'/src/controllers/'+'mc.yml'
 #v=[-0.07,0.07]
 p=[-1.2, -1.0]
 v=[-0.07,0.07]
+initSet=[p,v]
 T=30
-K=10
-n=MC.checkSafety([p,v],T)
+#K=10
+#n=MC.checkSafety([p,v],T)
 #MC.getRandomTrajs([p,v],T,K)
 #MC.getLog([p,v],T)
 #print(n)
+
+
+################# Results ################# 
+
+unsafe=0.055
+op='ge'
+state=1
+
+#MC.showBehavior(initSet,T)
+#MC.showLogGeneration(initSet,T)
+#MC.showValidTrajs(initSet,T,K=10)
+MC.checkSafety(initSet,T,unsafe,state,op)

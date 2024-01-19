@@ -58,9 +58,9 @@ class VanderPol:
     def vizTrajs(trajs,logUn=None,save=False,name="Untitled"):
 
         ax = plt.axes(projection='3d')
-        ax.set_xlabel('x')
-        ax.set_ylabel('y')
-        ax.set_zlabel('time')
+        ax.set_xlabel('x',fontsize=20,fontweight='bold')
+        ax.set_ylabel('y',fontsize=20,fontweight='bold')
+        ax.set_zlabel('time',fontsize=8,fontweight='bold')
 
         if logUn!=None:
             for lg in logUn:
@@ -98,7 +98,7 @@ class VanderPol:
         ax = plt.axes(projection='3d')
         ax.set_xlabel('x',fontsize=20,fontweight='bold')
         ax.set_ylabel('y',fontsize=20,fontweight='bold')
-        ax.set_zlabel('time',fontsize=20,fontweight='bold')
+        ax.set_zlabel('time',fontsize=8,fontweight='bold')
 
         if logUn!=None:
             for lg in logUn:
@@ -119,7 +119,7 @@ class VanderPol:
             x=[p[0] for p in traj]
             y=[p[1] for p in traj]
             t=list(range(0,len(traj)))
-            ax.plot3D(x, y, t,color='red')
+            ax.plot3D(x, y, t,color='red',alpha=0.35)
     
         if save:
             plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
@@ -394,7 +394,7 @@ class VanderPol:
         logUn=logger.genLog()[0]
         VanderPol.vizTrajs(trajsL,logUn,save=True,name="VanderPolLog3D")
         VanderPol.vizTrajsVal2D(trajsL,logUn,unsafe=None,state=0,save=True,name="VanderPolLogS0")
-        VanderPol.vizTrajsVal2D(trajsL,logUn,unsafe=3,state=1,save=True,name="VanderPolLogS1")
+        VanderPol.vizTrajsVal2D(trajsL,logUn,unsafe=2.78,state=1,save=True,name="VanderPolLogS1")
 
     def showValidTrajs(initSet,T,K):
         trajsL=VanderPol.getRandomTrajs(initSet,T,1)
@@ -505,6 +505,6 @@ op='ge'
 
 #VanderPol.showBehavior(initSet,T)
 #VanderPol.showLogGeneration(initSet,T)
-#VanderPol.showValidTrajs(initSet,T,K=20)
+VanderPol.showValidTrajs(initSet,T,K=20)
 #VanderPol.checkSafety(initSet,T,unsafe,state,op)
 #VanderPol.varyC(initSet,T,unsafe,state,op)
