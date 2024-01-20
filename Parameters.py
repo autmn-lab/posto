@@ -44,6 +44,7 @@ DELTA_LOG=0.02
 #DELTA_LOG=0.04
 '''
 
+
 '''
 # Vander Pol
 PROBABILITY_LOG=1
@@ -53,6 +54,7 @@ DELTA_STATE=0.004
 DELTA_LOG=0.2
 #DELTA_LOG=0.4
 '''
+
 
 # Mountain Car
 #PROBABILITY_LOG=20
