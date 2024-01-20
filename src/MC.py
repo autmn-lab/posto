@@ -215,6 +215,24 @@ class MC:
         if len(unsafeTrajs)>0 and len(safeTrajs)>0:
             MC.vizTrajsSafeUnsafe([safeTrajs[0]],[unsafeTrajs[0]],logUn,None,unsafe,state)
         
+    def vizVaryC(cList,sList,tList,save=False,name="Untitled"):
+        plt.xlabel(r'$c$',fontsize=20,fontweight = 'bold')
+        plt.ylabel(r'Time taken',fontsize=20,fontweight = 'bold')
+        L=len(cList)
+        
+        plt.plot(cList,tList,linewidth=5,linestyle='dashed')
+
+        for i in range(L):
+            if sList[i]==True:
+                plt.scatter(cList[i], tList[i], s=350, c='green')
+            else:
+                plt.scatter(cList[i], tList[i], s=350, c='red')
+        
+        if save:
+            plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
+        else:
+            plt.show()
+        plt.clf()
 
     def vizTrajsSafeUnsafe(safeTrajs,unsafeTrajs,safeSamps,unsafeSamps,unsafe=0.0,state=0):
 
@@ -1213,6 +1231,48 @@ class MC:
             Y[i]=1/(1 + np.exp(-X[i]))
         return Y 
     
+    def isSafe(initSet,T,unsafe,state,op,Bi,ci):
+        ts=time.time()
+        trajsL=MC.getRandomTrajs(initSet,T,1)
+        logger=GenLog(trajsL[0])
+        logUn=logger.genLog()[0]
+        K=JFB(Bi,ci).getNumberOfSamples()
+        #K=200
+        isSafe=True
+        totTrajs=0
+        valTrajObj=TrajValidity(logUn)
+        valTrajs=[]
+        safeTrajs=[]
+        unsafeTrajs=[]
+        safeTrajObj=TrajSafety([state,op,unsafe])
+        (safeSamps,unsafeSamps)=safeTrajObj.getSafeUnsafeLog(logUn)
+        if len(unsafeSamps)==0 or False:
+            while len(valTrajs)<=K:
+                trajs=MC.getRandomTrajs(logUn[0][0],T,100)
+                totTrajs+=1
+                valTrajsIt,inValTrajsIt=valTrajObj.getValTrajs(trajs)
+                valTrajs=valTrajs+valTrajsIt
+                print(totTrajs*100,len(valTrajs))
+                # Check safety of valTrajsIt
+                (safeTrajs,unsafeTrajs)=safeTrajObj.getSafeUnsafeTrajs(valTrajsIt)
+                if len(unsafeTrajs)>0:
+                    isSafe=False
+                    break
+                ############################
+
+                if len(valTrajs)>=K:
+                    break
+        else:
+            isSafe=False
+        
+        ts=time.time()-ts
+        print("Time Taken: ",ts)
+        print("Safety: ",isSafe)
+        print("[Trajs] Safe, Unsafe: ",len(safeTrajs),len(unsafeTrajs))
+        print("[Log] Safe, Unsafe: ",len(safeSamps),len(unsafeSamps))
+        print("Total Trajectories Generated: ",totTrajs*100,"; Valid Trajectories: ",len(valTrajs))
+        return (ts,isSafe)
+
     def showBehavior(initSet,T):
         trajsL=MC.getRandomTrajs(initSet,T,50)
         MC.vizTrajs(trajsL,save=True,name="MCBehavior")
@@ -1223,7 +1283,7 @@ class MC:
         logUn=logger.genLog()[0]
         MC.vizTrajs(trajsL,logUn,save=True,name="MCLog3D")
         MC.vizTrajsVal2D(trajsL,logUn,unsafe=None,state=0,save=True,name="MCLogS0")
-        MC.vizTrajsVal2D(trajsL,logUn,unsafe=0.1,state=1,save=True,name="MCLogS1")
+        MC.vizTrajsVal2D(trajsL,logUn,unsafe=0.055,state=1,save=True,name="MCLogS1")
 
     def showValidTrajs(initSet,T,K):
         trajsL=MC.getRandomTrajs(initSet,T,1)
@@ -1244,7 +1304,7 @@ class MC:
         print("Time taken: ",ts)
         MC.vizTrajsVal(valTrajs[:5],inValTrajsIt[:5],logUn,save=True,name="MCValTrajs")
         MC.vizTrajsValInVal2D(valTrajs[:1],inValTrajsIt[:1],logUn,unsafe=None,state=0,save=True,name="MCValTrajsS0")
-        MC.vizTrajsValInVal2D(valTrajs[:1],inValTrajsIt[:1],logUn,unsafe=None,state=1,save=True,name="MCValTrajsS1")
+        MC.vizTrajsValInVal2D(valTrajs[:1],inValTrajsIt[:1],logUn,unsafe=0.005,state=1,save=True,name="MCValTrajsS1")
 
     def vizLogsSafeUnsafe2D(T,safeSamps,unsafeSamps,unsafe=0.0,state=0,save=False,name="Untitled"):
 
@@ -1367,7 +1427,7 @@ class MC:
         
         
         if len(unsafeSamps)>0:
-            MC.vizLogsSafeUnsafe2D(T,safeSamps,unsafeSamps,unsafe,state,save=True,name="VanderPolSafeUnsafeLogs")
+            MC.vizLogsSafeUnsafe2D(T,safeSamps,unsafeSamps,unsafe,state,save=True,name="MCSafeUnsafeLogs")
         
         if len(unsafeTrajs)>0 and len(safeTrajs)>0:
             #print("A")
@@ -1378,6 +1438,21 @@ class MC:
         elif len(unsafeTrajs)>0:
             #print("C")
             MC.vizTrajsVal2D(unsafeTrajs,logUn,unsafe,state,save=True,name="MCUnsafeTrajs")
+
+    def varyC(initSet,T,unsafe,state,op):
+        cList=[0.6,0.7,0.8,0.9,0.99]
+        tList=[]
+        sList=[]
+        for ci in cList:
+            print(">> c = ",ci)
+            (t,sF)=MC.isSafe(initSet,T,unsafe,state,op,B,ci)
+            tList.append(t)
+            sList.append(sF)
+            print("=====================\n\n")
+
+        print(tList)
+        print(sList)
+        MC.vizVaryC(cList,sList,tList,save=True,name="MCVaryC")
 
 
     def loadControllerYAML(pathMC):
@@ -1428,5 +1503,6 @@ state=1
 
 #MC.showBehavior(initSet,T)
 #MC.showLogGeneration(initSet,T)
-#MC.showValidTrajs(initSet,T,K=10)
-MC.checkSafety(initSet,T,unsafe,state,op)
+MC.showValidTrajs(initSet,T,K=10)
+#MC.checkSafety(initSet,T,unsafe,state,op)
+#MC.varyC(initSet,T,unsafe,state,op)
