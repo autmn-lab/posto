@@ -513,5 +513,5 @@ op='le'
 #Jet.showBehavior(initSet,T)
 #Jet.showLogGeneration(initSet,T)
 #Jet.showValidTrajs(initSet,T,K=20)
-#Jet.checkSafety(initSet,T,unsafe,state,op)
-Jet.varyC(initSet,T,unsafe,state,op)
+Jet.checkSafety(initSet,T,unsafe,state,op)
+#Jet.varyC(initSet,T,unsafe,state,op)
