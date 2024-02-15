@@ -1,0 +1,6 @@
+Time Taken:  47.04519271850586
+Safety:  True
+[Trajs] Safe, Unsafe:  9 0
+[Log] Safe, Unsafe:  152 0
+Total Trajectories Generated:  9700 ; Valid Trajectories:  1154
+
