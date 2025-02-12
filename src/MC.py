@@ -1504,5 +1504,5 @@ state=1
 #MC.showBehavior(initSet,T)
 #MC.showLogGeneration(initSet,T)
 #MC.showValidTrajs(initSet,T,K=10)
-MC.checkSafety(initSet,T,unsafe,state,op)
-#MC.varyC(initSet,T,unsafe,state,op)
+#MC.checkSafety(initSet,T,unsafe,state,op)
+MC.varyC(initSet,T,unsafe,state,op)
