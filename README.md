@@ -132,7 +132,7 @@ To elaborate on the sources of stochasticity, the following factors contribute t
 2. Set the parameter `FIG='5(a)'` (or `FIG='5(b)'` and others) in line 31 of the file [`/my/location/monitor-bb/Parameters.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/Parameters.py).
 
    * ```python
-     FIG='4(a)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
+     FIG='5(a)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
      ```
 
 3. Run the python script [`VanderPol.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/src_artifact/VanderPol.py) in folder `/my/location/monitor-bb/src_artifact`
