@@ -518,22 +518,5 @@ op='le'
 #Jet.checkSafety(initSet,T,unsafe,state,op)
 #Jet.varyC(initSet,T,unsafe,state,op)
 
-# Generating Fig 4(a)
-PROBABILITY_LOG=5
-DELTA_LOG=0.02
-Jet.checkSafety(initSet,T,unsafe,state,op)
 
-# Generating Fig 4(b)
-PROBABILITY_LOG=5
-DELTA_LOG=0.04
-Jet.checkSafety(initSet,T,unsafe,state,op)
-
-# Generating Fig 4(c)
-PROBABILITY_LOG=3
-DELTA_LOG=0.02
-Jet.checkSafety(initSet,T,unsafe,state,op)
-
-# Generating Fig 4(d)
-PROBABILITY_LOG=5
-DELTA_LOG=0.04
 Jet.checkSafety(initSet,T,unsafe,state,op)

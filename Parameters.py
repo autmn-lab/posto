@@ -26,41 +26,78 @@ c=0.99
 
 VIZ_PER_COVERAGE=20
 
+ARTIFACT_EVAL=True
 
-''''
-pr=PROBABILITY_LOG
-dS=DELTA_STATE
-dL=DELTA_LOG
-'''
+FIG='4(d)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
 
-
-# Jet
-#PROBABILITY_LOG=3 
-#PROBABILITY_LOG=5
-#PROBABILITY_LOG=7
-#PROBABILITY_LOG=9
-PROBABILITY_LOG=11
-DT=0.01
-DELTA_STATE=0.002
-#DELTA_STATE=0.004
-DELTA_LOG=0.02
-#DELTA_LOG=0.04
+if ARTIFACT_EVAL==False:
+    ''''
+    pr=PROBABILITY_LOG
+    dS=DELTA_STATE
+    dL=DELTA_LOG
+    '''
 
 
-'''
-# Vander Pol
-PROBABILITY_LOG=1
-#PROBABILITY_LOG=3
-DT=0.01
-DELTA_STATE=0.004
-DELTA_LOG=0.2
-#DELTA_LOG=0.4
-'''
+    # Jet
+    #PROBABILITY_LOG=3 
+    #PROBABILITY_LOG=5
+    #PROBABILITY_LOG=7
+    #PROBABILITY_LOG=9
+    PROBABILITY_LOG=11
+    DT=0.01
+    DELTA_STATE=0.002
+    #DELTA_STATE=0.004
+    DELTA_LOG=0.02
+    #DELTA_LOG=0.04
 
-'''
-# Mountain Car
-PROBABILITY_LOG=20
-#PROBABILITY_LOG=40
-DELTA_LOG=0.004
-#DELTA_LOG=0.008
-'''
+
+    '''
+    # Vander Pol
+    PROBABILITY_LOG=1
+    #PROBABILITY_LOG=3
+    DT=0.01
+    DELTA_STATE=0.004
+    DELTA_LOG=0.2
+    #DELTA_LOG=0.4
+    '''
+
+    '''
+    # Mountain Car
+    PROBABILITY_LOG=20
+    #PROBABILITY_LOG=40
+    DELTA_LOG=0.004
+    #DELTA_LOG=0.008
+    '''
+else:
+    if FIG=='4(a)':
+        PROBABILITY_LOG=5
+        DT=0.01
+        DELTA_STATE=0.002
+        DELTA_LOG=0.02
+        print("Parameters set for fig. 4(a)")
+    elif FIG=='4(b)':
+        PROBABILITY_LOG=5
+        DT=0.01
+        DELTA_STATE=0.002
+        DELTA_LOG=0.04
+        print("Parameters set for fig. 4(b)")
+    elif FIG=='4(c)':
+        PROBABILITY_LOG=3
+        DT=0.01
+        DELTA_STATE=0.002
+        DELTA_LOG=0.02
+        print("Parameters set for fig. 4(c)")
+    elif FIG=='4(d)':
+        PROBABILITY_LOG=3
+        DT=0.01
+        DELTA_STATE=0.002
+        DELTA_LOG=0.04
+        print("Parameters set for fig. 4(c)")
+    elif FIG=='3(a)' or FIG=='3(c)' or FIG=='3(b)':
+        PROBABILITY_LOG=5
+        DT=0.01
+        DELTA_STATE=0.002
+        DELTA_LOG=0.02
+        print("Parameters set for fig. 3(a..c)")
+    
+
