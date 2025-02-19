@@ -5,7 +5,7 @@ With the increasing autonomous capabilities of cyber-physical systems, the compl
 
 `Posto` is a Python-based prototype tool that implements the proposed statistical monitoring technique, enabling an effective monitoring of complex systems, including non-linear systems with DNN-based components, while providing results with high probabilistic guarantees.
 
-![Overview](/home/bghosh/MyReseach/Monitoring_BlackBox/monitor-bb/figs/Overview.png)
+![Overview](https://github.com/bineet-coderep/monitor-bb/figs/Overview.png)
 
 
 ## Installation
@@ -69,9 +69,9 @@ To elaborate on the sources of stochasticity, the following factors contribute t
 
       * **NOTE:** This will generate fig. 3(a) first, followed by fig. 3(c). Be sure to close the figure window before generating the next figure.
 
-      * ![3(a)](/home/bghosh/MyReseach/Monitoring_BlackBox/monitor-bb/figs/3(a).png)
+      * ![3(a)](https://github.com/bineet-coderep/monitor-bb/figs/3(a).png)
 
-      * ![3(c)](/home/bghosh/MyReseach/Monitoring_BlackBox/monitor-bb/figs/3(c).png)
+      * ![3(c)](https://github.com/bineet-coderep/monitor-bb/figs/3(c).png)
 
 2. **To recreate fig. 3(b), perform the following steps:**
 
@@ -117,4 +117,4 @@ To elaborate on the sources of stochasticity, the following factors contribute t
      python src_artifact/Jet.py
      ```
 
-   * ![Fig4](/home/bghosh/MyReseach/Monitoring_BlackBox/monitor-bb/figs/Fig4.png)
+   * ![Fig4](https://github.com/bineet-coderep/monitor-bb/figs/Fig4.png)
