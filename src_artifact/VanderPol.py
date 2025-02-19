@@ -513,22 +513,5 @@ op='ge'
 
 
 
-# Generating Fig 5(a)
-PROBABILITY_LOG=3
-DELTA_LOG=0.2
-VanderPol.checkSafety(initSet,T,unsafe,state,op)
 
-# Generating Fig 5(b)
-PROBABILITY_LOG=3
-DELTA_LOG=0.4
-VanderPol.checkSafety(initSet,T,unsafe,state,op)
-
-# Generating Fig 5(c)
-PROBABILITY_LOG=1
-DELTA_LOG=0.2
-VanderPol.checkSafety(initSet,T,unsafe,state,op)
-
-# Generating Fig 5(d)
-PROBABILITY_LOG=1
-DELTA_LOG=0.4
 VanderPol.checkSafety(initSet,T,unsafe,state,op)

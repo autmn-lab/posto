@@ -28,7 +28,7 @@ VIZ_PER_COVERAGE=20
 
 ARTIFACT_EVAL=True
 
-FIG='4(d)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
+FIG='5(d)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
 
 if ARTIFACT_EVAL==False:
     ''''
@@ -99,5 +99,32 @@ else:
         DELTA_STATE=0.002
         DELTA_LOG=0.02
         print("Parameters set for fig. 3(a..c)")
+    elif FIG=='5(a)':
+        PROBABILITY_LOG=3
+        DT=0.01
+        DELTA_STATE=0.004
+        DELTA_LOG=0.2
+        print("Parameters set for fig. 5(a)")
+    elif FIG=='5(b)':
+        PROBABILITY_LOG=3
+        DT=0.01
+        DELTA_STATE=0.004
+        DELTA_LOG=0.4
+        print("Parameters set for fig. 5(b)")
+    elif FIG=='5(c)':
+        PROBABILITY_LOG=1
+        DT=0.01
+        DELTA_STATE=0.004
+        DELTA_LOG=0.2
+        print("Parameters set for fig. 5(c)")
+    elif FIG=='5(d)':
+        PROBABILITY_LOG=3
+        DT=0.01
+        DELTA_STATE=0.004
+        DELTA_LOG=0.4
+        print("Parameters set for fig. 5(d)")
+    else:
+        print("No such figures found!")
+        exit(0)
     
 

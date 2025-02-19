@@ -40,7 +40,7 @@ This section outlines the steps to recreate the plots presented in the paper. It
 
 It is important to note that this does not affect the soundness of our method. Rather, it reaffirms the stochastic nature of our work, and such stochastic recreations demonstrate the influence of various parameters on the proposed method, as explored in the research questions of the paper. In simpler terms, while the recreated plots may not be identical (in a deterministic sense), they are stochastically equivalent.
 
-To elaborate on the sources of stochasticity, the following factors contribute to the variability in the generated plots:
+To elaborate on the sources of stochasticity, the following factors contribute to the variability in the generated plots (testing this by running the scripts multiple times could be a good approach):
 
 1. Although the same parameters (logging probability and log noise) are used to generate the logs, the logs themselves are random, though stochastically equivalent, as they are derived from the same distribution.
 2. Additionally, the safety verification process is inherently stochastic, meaning that safety inferences could vary across different iterations. 
@@ -118,3 +118,29 @@ To elaborate on the sources of stochasticity, the following factors contribute t
      ```
 
    * ![Fig4](https://github.com/bineet-coderep/monitor-bb/blob/main/figs/Fig4.png)
+
+### Recreating Figs. 5(a)-(c)
+
+**Following steps are to specifically recreate fig. 5(a), but the same steps could be used to generate figs. 5(b)-(c), as long as the parameter value is set accordingly in step 2:**
+
+1. Make sure you are in location `/my/location/monitor-bb/`
+
+   * ```bash
+     cd /my/location/monitor-bb/
+     ```
+
+2. Set the parameter `FIG='5(a)'` (or `FIG='5(b)'` and others) in line 31 of the file [`/my/location/monitor-bb/Parameters.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/Parameters.py).
+
+   * ```python
+     FIG='4(a)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
+     ```
+
+3. Run the python script [`VanderPol.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/src_artifact/VanderPol.py) in folder `/my/location/monitor-bb/src_artifact`
+
+   * ```bash
+     python src_artifact/VanderPol.py
+     ```
+
+   * ![Fig4](https://github.com/bineet-coderep/monitor-bb/blob/main/figs/Fig5.png)
+
+   
