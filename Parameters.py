@@ -28,7 +28,8 @@ VIZ_PER_COVERAGE=20
 
 ARTIFACT_EVAL=True
 
-FIG='5(d)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
+# Here: please choose the figure to regenerate
+FIG='5(a)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
 
 if ARTIFACT_EVAL==False:
     ''''

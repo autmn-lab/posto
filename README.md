@@ -28,10 +28,10 @@ With the increasing autonomous capabilities of cyber-physical systems, the compl
       vi ~/.baschrc
       ```
 
-   2. Once `.bashrc` is opened, please add the location, where the tool was downloaded, to a path variable `ULS_ROOT_DIR` (This step is crucial to run the tool):
+   2. Once `.bashrc` is opened, please add the location, where the tool was downloaded, to a path variable `MNTR_BB_ROOT_DIR` (This step is crucial to run the tool):
 
       1. ```shell
-         export MNTR_ROOT_DIR=/my/location/monitor-bb/
+         export MNTR_BB_ROOT_DIR=/my/location/monitor-bb/
          ```
 
 ## Artifact Evaluation
@@ -55,13 +55,13 @@ To elaborate on the sources of stochasticity, the following factors contribute t
         cd /my/location/monitor-bb/
         ```
 
-   2. Set the parameter `FIG='3(a)'` (or `FIG='3(c)'`) in line 31 of the file [`/my/location/monitor-bb/Parameters.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/Parameters.py).
+   2. Set the parameter `FIG='3(a)'` (or `FIG='3(c)'`) in line 32 of the file [`/my/location/monitor-bb/Parameters.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/Parameters.py).
 
       * ```python
         FIG='3(a)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
         ```
 
-   3. Run the python script [`Jet2.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/src_artifact/Jet2.py) in folder `/my/location/monitor-bb/src_artifact`
+   3. Run the python script [`Jet2.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/src_artifact/Jet2.py) from directory `/my/location/monitor-bb/`
 
       * ```bash
         python src_artifact/Jet2.py
@@ -73,6 +73,8 @@ To elaborate on the sources of stochasticity, the following factors contribute t
 
       * ![3(c)](https://github.com/bineet-coderep/monitor-bb/blob/main/figs/3(c).png)
 
+This experiment should take a few seconds.
+
 2. **To recreate fig. 3(b), perform the following steps:**
 
    1. Make sure you are in location `/my/location/monitor-bb/`
@@ -81,19 +83,21 @@ To elaborate on the sources of stochasticity, the following factors contribute t
         cd /my/location/monitor-bb/
         ```
 
-   2. Set the parameter `FIG='3(a)'` (or `FIG='3(c)'`) in line 31 of the file [`/my/location/monitor-bb/Parameters.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/Parameters.py).
+   2. Set the parameter `FIG='3(b)'` in line 32 of the file [`/my/location/monitor-bb/Parameters.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/Parameters.py).
 
       * ```python
         FIG='3(b)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
         ```
 
-   3. Run the python script [`fig3b.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/src_artifact/fig3b.py) in folder `/my/location/monitor-bb/src_artifact`
+   3. Run the python script [`fig3b.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/src_artifact/fig3b.py) from directory `/my/location/monitor-bb/`
 
       * ```bash
         python src_artifact/fig3b.py
         ```
 
       * ![3(b)](https://github.com/bineet-coderep/monitor-bb/blob/main/figs/3(b).png)
+
+This experiment should take a fraction of seconds.
 
 ### Recreating Figs. 4(a)-(c)
 
@@ -105,19 +109,21 @@ To elaborate on the sources of stochasticity, the following factors contribute t
      cd /my/location/monitor-bb/
      ```
 
-2. Set the parameter `FIG='4(a)'` (or `FIG='4(b)'` and others) in line 31 of the file [`/my/location/monitor-bb/Parameters.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/Parameters.py).
+2. Set the parameter `FIG='4(a)'` (or `FIG='4(b)'` and others) in line 32 of the file [`/my/location/monitor-bb/Parameters.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/Parameters.py).
 
    * ```python
      FIG='4(a)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
      ```
 
-3. Run the python script [`Jet.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/src_artifact/Jet.py) in folder `/my/location/monitor-bb/src_artifact`
+3. Run the python script [`Jet.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/src_artifact/Jet.py) from directory `/my/location/monitor-bb/`
 
    * ```bash
      python src_artifact/Jet.py
      ```
 
    * ![Fig4](https://github.com/bineet-coderep/monitor-bb/blob/main/figs/Fig4.png)
+   
+This experiment may take about 20 seconds.
 
 ### Recreating Figs. 5(a)-(c)
 
@@ -129,13 +135,13 @@ To elaborate on the sources of stochasticity, the following factors contribute t
      cd /my/location/monitor-bb/
      ```
 
-2. Set the parameter `FIG='5(a)'` (or `FIG='5(b)'` and others) in line 31 of the file [`/my/location/monitor-bb/Parameters.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/Parameters.py).
+2. Set the parameter `FIG='5(a)'` (or `FIG='5(b)'` and others) in line 32 of the file [`/my/location/monitor-bb/Parameters.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/Parameters.py).
 
    * ```python
      FIG='5(a)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
      ```
 
-3. Run the python script [`VanderPol.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/src_artifact/VanderPol.py) in folder `/my/location/monitor-bb/src_artifact`
+3. Run the python script [`VanderPol.py`](https://github.com/bineet-coderep/monitor-bb/blob/main/src_artifact/VanderPol.py) from directory `/my/location/monitor-bb/`
 
    * ```bash
      python src_artifact/VanderPol.py
