@@ -119,7 +119,7 @@ else:
         DELTA_LOG=0.2
         print("Parameters set for fig. 5(c)")
     elif FIG=='5(d)':
-        PROBABILITY_LOG=3
+        PROBABILITY_LOG=1
         DT=0.01
         DELTA_STATE=0.004
         DELTA_LOG=0.4

@@ -17,6 +17,7 @@ With the increasing autonomous capabilities of cyber-physical systems, the compl
 - [`SciPy`](https://scipy.org/)
 - [`mpmath`](https://mpmath.org/)
 - [`mpl_toolkits`](https://matplotlib.org/2.2.2/mpl_toolkits/index.html)
+- [`tqdm`](https://pypi.org/project/tqdm/2.2.3/)
 
 ### Downloading the tool
 
@@ -123,6 +124,7 @@ This experiment should take a fraction of seconds.
 
    * ![Fig4](https://github.com/bineet-coderep/monitor-bb/blob/main/figs/Fig4.png)
    
+
 This experiment may take about 20 seconds.
 
 ### Recreating Figs. 5(a)-(c)
