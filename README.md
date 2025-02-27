@@ -37,13 +37,13 @@ With the increasing autonomous capabilities of cyber-physical systems, the compl
 
 ## Artifact Evaluation
 
-This section outlines the steps to recreate the plots presented in the paper. It is worth noting that the safety verification method proposed in our work is inherently statistical. Consequently, the reproduction of the plots will not yield an exact match but rather a stochastic recreation. In other words, the plots are recreated using the same set of parameters as in the draft, which define the distributions. The recreated plots represent one possible outcome from that distribution, hence the term ‘stochastic recreation.’ As a result, some figures that were initially inferred to be safe in the draft may yield unsafe results (or vice versa) during this process.
+This section outlines the steps to recreate the plots presented in the paper. It is worth noting that the safety verification method proposed in our work is inherently _statistical_. Consequently, the reproduction of the plots will not yield an exact match but rather a _stochastic recreation_. In other words, the plots are recreated using the same set of parameters as in the draft, which define the distributions. The recreated plots represent one possible outcome from that distribution, hence the term "stochastic recreation". As a result, some figures that were initially inferred to be safe in the draft may yield unsafe results (or vice versa) during this process.
 
 It is important to note that this does not affect the soundness of our method. Rather, it reaffirms the stochastic nature of our work, and such stochastic recreations demonstrate the influence of various parameters on the proposed method, as explored in the research questions of the paper. In simpler terms, while the recreated plots may not be identical (in a deterministic sense), they are stochastically equivalent.
 
 To elaborate on the sources of stochasticity, the following factors contribute to the variability in the generated plots (testing this by running the scripts multiple times could be a good approach):
 
-1. Although the same parameters (logging probability and log noise) are used to generate the logs, the logs themselves are random, though stochastically equivalent, as they are derived from the same distribution.
+1. Although the same parameters (logging probability and log noise) are used to generate the logs, the logs themselves are _random_, though stochastically equivalent, as they are derived from the same distribution.
 2. Additionally, the safety verification process is inherently stochastic, meaning that safety inferences could vary across different iterations. 
 
 ### Recreating Figs. 3(a)-(c)
