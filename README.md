@@ -100,7 +100,7 @@ This experiment should take a few seconds.
 
 This experiment should take a fraction of seconds.
 
-### Recreating Figs. 4(a)-(c)
+### Recreating Figs. 4(a)-(d)
 
 **Following steps are to specifically recreate fig. 4(a), but the same steps could be used to generate figs. 4(b)-(c), as long as the parameter value is set accordingly in step 2:**
 
@@ -127,7 +127,7 @@ This experiment should take a fraction of seconds.
 
 This experiment may take about 20 seconds.
 
-### Recreating Figs. 5(a)-(c)
+### Recreating Figs. 5(a)-(d)
 
 **Following steps are to specifically recreate fig. 5(a), but the same steps could be used to generate figs. 5(b)-(c), as long as the parameter value is set accordingly in step 2:**
 
