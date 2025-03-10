@@ -13,11 +13,54 @@ With the increasing autonomous capabilities of cyber-physical systems, the compl
 ### Dependencies
 
 - [`Python 3.9.x`](https://www.python.org/)
+
+  - To install this in Ubuntu, one can follow the following steps (note: this step requires the user to have `sudo` priviledges):
+
+  - ```bash
+    sudo apt update
+    sudo apt install python3.9 python3.9-venv python3.9-dev -y
+    ```
+
 - [`NumPy`](https://numpy.org/)
+
+  - ```bash
+    pip install numpy scipy
+    ```
+
 - [`SciPy`](https://scipy.org/)
+
+  - ```bash
+    pip install scipy tqdm
+    ```
+
 - [`mpmath`](https://mpmath.org/)
+
+  - ```
+    pip install mpmath
+    ```
+
 - [`mpl_toolkits`](https://matplotlib.org/2.2.2/mpl_toolkits/index.html)
+
+  - ```bash
+    pip install matplotlib
+    ```
+
 - [`tqdm`](https://pypi.org/project/tqdm/2.2.3/)
+
+  - ```
+    pip install tqdm
+    ```
+
+
+#### Verify Installation
+
+* To verify if the above dependencies are correctly installed, one can run the following:
+
+  * ```bash
+    python -c "import numpy, scipy, mpmath, tqdm, mpl_toolkits; print('All dependencies installed successfully!')"
+    ```
+
+  * _If all the dependencies are correctly installed, the above command should run without any error, and display `All dependencies installed successfully!` in the terminal._
 
 ### Downloading the tool
 
