@@ -14,8 +14,6 @@ import math
 
 
 import tensorflow as tf
-#from tensorflow.keras.models import model_from_yaml,load_model
-#from tensorflow.keras import Sequential
 import yaml
 
 import matplotlib.pyplot as plt
@@ -55,7 +53,6 @@ class MC:
             v_init_rand=random.uniform(initSet[1][0], initSet[1][1])
             traj=MC.getTraj((p_init_rand,v_init_rand),T)
             trajs.append(traj)
-        #MC.vizTrajs(trajs)
         return trajs
 
     def vizTrajs2(trajsVal,logUn=None,unsafe=0.8,goal=0.6,state=0,save=False,name="Untitled"):
@@ -64,7 +61,6 @@ class MC:
 
         t=list(range(len(trajsVal[0])))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("Position",fontsize=20,fontweight='bold')
 
@@ -76,11 +72,8 @@ class MC:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
 
-        #p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
         p = plt.plot(t, [goal]*len(t),color='green',linewidth=lnWd,linestyle='dashed')
 
         if save:
@@ -100,7 +93,6 @@ class MC:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
                 p = plt.Rectangle((lg[0][0][0], lg[0][1][0]), wd, ht, facecolor='none', edgecolor='black',linewidth=0.4,alpha=1)
                 ax.add_patch(p)
                 art3d.pathpatch_2d_to_3d(p, z=lg[1], zdir="z")
@@ -123,7 +115,6 @@ class MC:
 
         t=list(range(len(trajsVal[0])))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -135,8 +126,6 @@ class MC:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
 
         if unsafe!=None:
@@ -154,26 +143,18 @@ class MC:
         logger=GenLog(trajs[0])
         log=logger.genLog()
 
-        #MC.vizTrajs(trajs,log[0])
-
+        
     def getValidTrajs(initSet,T,K,logUn):
-        #trajsL=MC.getRandomTrajs(initSet,T,1)
-        #logger=GenLog(trajsL[0])
-        #logUn=logger.genLog()[0]
         ts=time.time()
         valTrajObj=TrajValidity(logUn)
         valTrajs=[]
         pbar = tqdm(total=K)
         while len(valTrajs)<=K:
-            #print("SFSF")
             ts=time.time()
             trajs=MC.getRandomTrajs(logUn[0][0],T,100)
             ts=time.time()-ts
-            #print(ts)
-            #print("SFSF")
             valTrajsIt,inValTrajsIt=valTrajObj.getValTrajs(trajs)
             valTrajs=valTrajs+valTrajsIt
-            #print(len(valTrajs),"/",K)
             pbar.update(len(valTrajsIt))
             if len(valTrajs)>=K:
                 pbar.close()
@@ -181,9 +162,6 @@ class MC:
         pbar.close()
         ts=time.time()-ts
         print("Time: ",ts)
-        #MC.vizTrajsVal(valTrajs[:2],inValTrajsIt[:2],logUn)
-        #VanderPol.vizTrajsVal(valTrajs[:5],inValTrajsIt[:5],logUn)
-        #VanderPol.vizTrajsVal2D(valTrajs,logUn,unsafe=2.9,state=0)
         return valTrajs
     
     def checkSafety2(initSet,T):
@@ -205,11 +183,9 @@ class MC:
         ts=time.time()
         safeTrajObj=TrajReach([state,op,unsafe])
         (safeTrajs,unsafeTrajs)=safeTrajObj.getSafeUnsafeTrajs(validTrajs)
-        #(safeSamps,unsafeSamps)=safeTrajObj.getSafeUnsafeLog(logUn)
         ts=time.time()-ts
 
         print("[Trajs] Safe, Unsafe: ",len(safeTrajs),len(unsafeTrajs))
-        #print("[Log] Safe, Unsafe: ",len(safeSamps),len(unsafeSamps))
         print("Time taken to filter the trajs/logs: ",ts)
 
         if len(unsafeTrajs)>0 and len(safeTrajs)>0:
@@ -243,7 +219,6 @@ class MC:
         else:
             t=list(range(len(unsafeTrajs[0])))
 
-        #print(t)
         plt.xlabel("Time")
         plt.ylabel("Position")
 
@@ -259,16 +234,12 @@ class MC:
             for lg in safeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
         
         if unsafeSamps!=None:
             for lg in unsafeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='brown',linewidth=lnWd)
 
         p = plt.plot(t, [unsafe]*len(t),color='green',linewidth=lnWd,linestyle='dashed')
@@ -281,7 +252,6 @@ class MC:
 
         t=list(range(len(trajsVal[0])))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -293,8 +263,6 @@ class MC:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
 
         if unsafe!=None:
@@ -312,7 +280,6 @@ class MC:
 
         t=list(range(len(trajsVal[0])))
 
-        #print(t)
         plt.xlabel("Time")
         plt.ylabel("Position")
 
@@ -328,11 +295,8 @@ class MC:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
 
-        #p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
         p = plt.plot(t, [goal]*len(t),color='green',linewidth=lnWd,linestyle='dashed')
 
         plt.show()
@@ -348,7 +312,6 @@ class MC:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
                 p = plt.Rectangle((lg[0][0][0], lg[0][1][0]), wd, ht, facecolor='none', edgecolor='black',linewidth=0.4,alpha=0.5)
                 ax.add_patch(p)
                 art3d.pathpatch_2d_to_3d(p, z=lg[1], zdir="z")
@@ -377,7 +340,6 @@ class MC:
 
         t=list(range(len(trajsVal[0])))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -393,8 +355,6 @@ class MC:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
 
         if unsafe!=None:
@@ -410,17 +370,13 @@ class MC:
         model = tf.keras.models.Sequential()
         model.add(tf.keras.Input(shape=(2,)))
         layer_h1=tf.keras.layers.Dense(16, activation='sigmoid')
-        #layer_h1.set_weights(np.zeros((16,2),dtype=float))
         model.add(layer_h1)
         layer_h2=tf.keras.layers.Dense(16, activation='sigmoid')
-        #layer_h2.set_weights(np.zeros((16,16),dtype=float))
         model.add(layer_h2)
         layer_op=tf.keras.layers.Dense(1, activation='tanh')
-        #layer_op.set_weights(np.zeros((1,16),dtype=float))
         model.add(layer_op)
         
 
-        #print(layer_h1.weights)
         layer_h1_wt=np.array(
             [[ 0.04227863624691963,
                  -1.9995534420013428],
@@ -476,9 +432,6 @@ class MC:
             ]
         )
         layer_h1.set_weights([layer_h1_wt,layer_h1_bias])
-        #print(layer_h1.weights)
-
-        #print(layer_h2.weights)
         layer_h2_wt=np.array(
             [
                 [ 0.5029309391975403
@@ -776,9 +729,7 @@ class MC:
             ]
         ).transpose()
         layer_h2.set_weights([layer_h2_wt,layer_h2_bias])
-        #print(layer_h2.weights)
-
-        #print(layer_op.weights)
+        
         layer_op_wt=np.array(
             [[
                  -4.697135925292969
@@ -801,8 +752,7 @@ class MC:
         ).transpose()
         layer_op_bias=np.array([-2.083979368209839])
         layer_op.set_weights([layer_op_wt,layer_op_bias])
-        #print(layer_op.weights)
-
+        
         numpy_array=np.array([
             [p, v]
         ])
@@ -810,14 +760,12 @@ class MC:
         x = tf.convert_to_tensor(numpy_array)
         u = model(x)
 
-        #print(float(y))
-
+        
         return float(u)
     
     def controller(p,v):
         
 
-        #print(layer_h1.weights)
         layer_h1_wt=np.array(
             [[ 0.04227863624691963,
                  -1.9995534420013428],
@@ -872,9 +820,7 @@ class MC:
                 -0.030991174280643463,
             ]
         )
-        #print(layer_h1.weights)
-
-        #print(layer_h2.weights)
+        
         layer_h2_wt=np.array(
             [
                 [ 0.5029309391975403
@@ -1171,9 +1117,7 @@ class MC:
                 -0.2763088047504425,
             ]
         ).transpose()
-        #print(layer_h2.weights)
-
-        #print(layer_op.weights)
+        
         layer_op_wt=np.array(
             [
                  -4.697135925292969
@@ -1195,19 +1139,11 @@ class MC:
             ]
         )
         layer_op_bias=np.array([-2.083979368209839])
-        #print(layer_op.weights)
-
+        
         ip=np.array([
             [p, v]
         ])
 
-        #print(layer_h1_wt.transpose().shape,ip.transpose().shape,layer_h1_bias.transpose().shape)
-        #print(layer_op_wt.transpose())
-        #exit()
-        #print(layer_h1_bias.reshape(16,1))
-        #print(ip.trasnpose)
-        #exit(0)
-        #l1_op=np.matmul(layer_h1_wt.transpose(),ip.transpose())
         l1_op=np.matmul(layer_h1_wt,ip.reshape(2,1))+layer_h1_bias.reshape(16,1)
         # apply sigmoid to l1_op
         l1_op_sig=MC.sig(l1_op)
@@ -1217,11 +1153,7 @@ class MC:
         op=np.matmul(layer_op_wt,l2_op)+layer_op_bias.reshape(1,1)
         # apply tanh to l1_op
         op_tanh=np.tanh(op)
-        #print(op.shape)
-        #print(op.item())
-        #exit()
-        #print(float(y))
-
+        
         return op_tanh.item()
     
     def sig(X):
@@ -1237,7 +1169,6 @@ class MC:
         logger=GenLog(trajsL[0])
         logUn=logger.genLog()[0]
         K=JFB(Bi,ci).getNumberOfSamples()
-        #K=200
         isSafe=True
         totTrajs=0
         valTrajObj=TrajValidity(logUn)
@@ -1312,7 +1243,6 @@ class MC:
 
         t=list(range(T))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -1320,16 +1250,12 @@ class MC:
             for lg in safeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
         
         if unsafeSamps!=None:
             for lg in unsafeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='brown',linewidth=lnWd)
 
         p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
@@ -1349,7 +1275,6 @@ class MC:
         else:
             t=list(range(len(unsafeTrajs[0])))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -1365,16 +1290,12 @@ class MC:
             for lg in safeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
         
         if unsafeSamps!=None:
             for lg in unsafeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='brown',linewidth=lnWd)
 
         p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
@@ -1431,13 +1352,10 @@ class MC:
             MC.vizLogsSafeUnsafe2D(T,safeSamps,unsafeSamps,unsafe,state,save=sv,name="MCSafeUnsafeLogs")
         
         if len(unsafeTrajs)>0 and len(safeTrajs)>0:
-            #print("A")
             MC.vizTrajsSafeUnsafe2D([safeTrajs[0]],[unsafeTrajs[0]],safeSamps,unsafeSamps,unsafe,state,save=sv,name="MCSafeUnsafeTrajs")
         elif len(safeTrajs)>0 and len(unsafeTrajs)==0:
-            #print("B")
             MC.vizTrajsVal2D(safeTrajs,logUn,unsafe,state,save=sv,name="MCSafeTrajs")
         elif len(unsafeTrajs)>0:
-            #print("C")
             MC.vizTrajsVal2D(unsafeTrajs,logUn,unsafe,state,save=sv,name="MCUnsafeTrajs")
 
     def varyC(initSet,T,unsafe,state,op):
@@ -1468,14 +1386,6 @@ class MC:
         yaml_file.close()
         print(loaded_model_yaml)
         loaded_model = model_from_yaml(loaded_model_yaml,custom_objects={'class_name': Sequential})
-        #mt=tf.keras.Model.load_model(PROJECT_ROOT+'/src/controllers/'+'eff.ckpt')
-        #model_yaml = yaml.safe_load(yaml_string)
-
-        #model=tf.keras.models.load_model(model_yaml)
-
-        # model = tf.keras.models.model_from_yaml(model_yaml,custom_objects=None)
-
-        #print(model_yaml['activations'])
         
 
         print("UC")
@@ -1483,17 +1393,10 @@ class MC:
 
 
 pathMC=PROJECT_ROOT+'/src/controllers/'+'mc.yml'
-#p=[-1.2, 0.6]
-#v=[-0.07,0.07]
 p=[-1.2, -1.0]
 v=[-0.07,0.07]
 initSet=[p,v]
 T=30
-#K=10
-#n=MC.checkSafety([p,v],T)
-#MC.getRandomTrajs([p,v],T,K)
-#MC.getLog([p,v],T)
-#print(n)
 
 
 ################# Results ################# 
@@ -1502,11 +1405,6 @@ unsafe=0.055
 op='ge'
 state=1
 
-#MC.showBehavior(initSet,T)
-#MC.showLogGeneration(initSet,T)
-#MC.showValidTrajs(initSet,T,K=10)
-#MC.checkSafety(initSet,T,unsafe,state,op)
-#MC.varyC(initSet,T,unsafe,state,op)
 
 # (a)
 PROBABILITY_LOG=20

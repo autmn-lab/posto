@@ -32,43 +32,13 @@ ARTIFACT_EVAL=True
 FIG='5(a)' # Choose from {3(a), 3(b), 3(c), 4(a), 4(b), 4(c), 4(d), 5(a), 5(b), 5(c), 5(d)}
 
 if ARTIFACT_EVAL==False:
-    ''''
-    pr=PROBABILITY_LOG
-    dS=DELTA_STATE
-    dL=DELTA_LOG
-    '''
-
+    
 
     # Jet
-    #PROBABILITY_LOG=3 
-    #PROBABILITY_LOG=5
-    #PROBABILITY_LOG=7
-    #PROBABILITY_LOG=9
     PROBABILITY_LOG=11
     DT=0.01
     DELTA_STATE=0.002
-    #DELTA_STATE=0.004
     DELTA_LOG=0.02
-    #DELTA_LOG=0.04
-
-
-    '''
-    # Vander Pol
-    PROBABILITY_LOG=1
-    #PROBABILITY_LOG=3
-    DT=0.01
-    DELTA_STATE=0.004
-    DELTA_LOG=0.2
-    #DELTA_LOG=0.4
-    '''
-
-    '''
-    # Mountain Car
-    PROBABILITY_LOG=20
-    #PROBABILITY_LOG=40
-    DELTA_LOG=0.004
-    #DELTA_LOG=0.008
-    '''
 else:
     if FIG=='4(a)':
         PROBABILITY_LOG=5

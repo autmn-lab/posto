@@ -24,11 +24,7 @@ class TrajValidity:
                 valTrajs.append(traj)
             else:
                 inValTrajs.append(traj)
-        '''
-        print("# Stats from finding valid trajs")
-        print("\t* Total Trajs: ",len(trajs))
-        print("\t* Val Trajs: ",len(valTrajs))
-        '''
+        
         return (valTrajs,inValTrajs)
 
     def isTrajVal(self,traj):
@@ -45,6 +41,5 @@ class TrajValidity:
                     isSampVal=False
                     break
             if isSampVal==False:
-                #print(sm,self.log[k][0])
                 return False
         return True

@@ -56,9 +56,7 @@ def plt1(save=False,name="Random"):
     ax2.legend(['Total\nTrajs'], loc='center left', prop={'size': 15})
     ax3.legend(['% Valid Trajs'], loc='upper center', prop={'size': 15})
 
-    #plt.title('Performance Metrics over Logging Probability')
-    #plt.show()
-
+    
     if save:
         plt.savefig(name+".pdf", format="pdf", bbox_inches="tight")
     else:

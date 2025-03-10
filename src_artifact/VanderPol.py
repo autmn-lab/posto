@@ -52,7 +52,6 @@ class VanderPol:
             y_init_rand=random.uniform(initSet[1][0], initSet[1][1])
             traj=VanderPol.getTraj((x_init_rand,y_init_rand),T)
             trajs.append(traj)
-        #VanderPol.vizTrajs(trajs)
         return trajs
 
     def vizTrajs(trajs,logUn=None,save=False,name="Untitled"):
@@ -66,7 +65,6 @@ class VanderPol:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
                 p = plt.Rectangle((lg[0][0][0], lg[0][1][0]), wd, ht, facecolor='none', edgecolor='black',linewidth=0.4,alpha=1)
                 ax.add_patch(p)
                 art3d.pathpatch_2d_to_3d(p, z=lg[1], zdir="z")
@@ -89,8 +87,7 @@ class VanderPol:
         logger=GenLog(trajs[0])
         log=logger.genLog()
 
-        #print(log[0])
-
+        
         VanderPol.vizTrajs(trajs,log[0])
 
     def vizTrajsVal(trajsVal,trajsInVal,logUn=None,save=False,name="Untitled"):
@@ -104,7 +101,6 @@ class VanderPol:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
                 p = plt.Rectangle((lg[0][0][0], lg[0][1][0]), wd, ht, facecolor='none', edgecolor='black',linewidth=0.4,alpha=0.5)
                 ax.add_patch(p)
                 art3d.pathpatch_2d_to_3d(p, z=lg[1], zdir="z")
@@ -133,7 +129,6 @@ class VanderPol:
 
         t=list(range(len(trajsVal[0])))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -145,8 +140,6 @@ class VanderPol:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
 
         if unsafe!=None:
@@ -164,7 +157,6 @@ class VanderPol:
 
         t=list(range(len(trajsVal[0])))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -180,8 +172,6 @@ class VanderPol:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
 
         if unsafe!=None:
@@ -202,7 +192,6 @@ class VanderPol:
         else:
             t=list(range(len(unsafeTrajs[0])))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -218,16 +207,12 @@ class VanderPol:
             for lg in safeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
         
         if unsafeSamps!=None:
             for lg in unsafeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='brown',linewidth=lnWd)
 
         p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
@@ -244,7 +229,6 @@ class VanderPol:
 
         t=list(range(T))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -252,16 +236,12 @@ class VanderPol:
             for lg in safeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
         
         if unsafeSamps!=None:
             for lg in unsafeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='brown',linewidth=lnWd)
 
         p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
@@ -303,14 +283,11 @@ class VanderPol:
             trajs=VanderPol.getRandomTrajs(logUn[0][0],T,100)
             valTrajsIt,inValTrajsIt=valTrajObj.getValTrajs(trajs)
             valTrajs=valTrajs+valTrajsIt
-            #print(len(valTrajs),"/",K)
             pbar.update(len(valTrajsIt))
             if len(valTrajs)>=K:
                 pbar.close()
                 break
         pbar.close()
-        #ts=time.time()-ts
-        #print("Time: ",ts)
         VanderPol.vizTrajsVal(valTrajs[:5],inValTrajsIt[:5],logUn)
         VanderPol.vizTrajsVal2D(valTrajs,logUn,unsafe=2.9,state=0)
         return valTrajs
@@ -327,8 +304,7 @@ class VanderPol:
         validTrajs=VanderPol.getValidTrajs(initSet,T,K,logUn)
         ts=time.time()-ts
         print("Time taken to generate ", len(validTrajs)," valid trajectories: ",ts)
-        #Jet.vizTrajsVal2D(validTrajs,logUn,unsafe,state)
-
+        
         ts=time.time()
         safeTrajObj=TrajSafety([state,op,unsafe])
         (safeTrajs,unsafeTrajs)=safeTrajObj.getSafeUnsafeTrajs(validTrajs)
@@ -348,7 +324,6 @@ class VanderPol:
         logger=GenLog(trajsL[0])
         logUn=logger.genLog()[0]
         K=JFB(Bi,ci).getNumberOfSamples()
-        #K=200
         isSafe=True
         totTrajs=0
         valTrajObj=TrajValidity(logUn)
@@ -423,7 +398,6 @@ class VanderPol:
         logger=GenLog(trajsL[0])
         logUn=logger.genLog()[0]
         K=JFB(B,c).getNumberOfSamples()
-        #K=200
         isSafe=True
         totTrajs=0
         valTrajObj=TrajValidity(logUn)
@@ -464,13 +438,10 @@ class VanderPol:
             VanderPol.vizLogsSafeUnsafe2D(T,safeSamps,unsafeSamps,unsafe,state,save=sv,name="VanderPolSafeUnsafeLogs")
 
         if len(unsafeTrajs)>0 and len(safeTrajs)>0:
-            #print("A")
             VanderPol.vizTrajsSafeUnsafe2D([safeTrajs[0]],[unsafeTrajs[0]],safeSamps,unsafeSamps,unsafe,state,save=sv,name="VanderPolSafeUnsafeTrajs")
         elif len(safeTrajs)>0 and len(unsafeTrajs)==0:
-            #print("B")
             VanderPol.vizTrajsVal2D(safeTrajs,logUn,unsafe,state,save=sv,name="VanderPolSafeTrajs")
         elif len(unsafeTrajs)>0:
-            #print("C")
             VanderPol.vizTrajsVal2D(unsafeTrajs,logUn,unsafe,state,save=sv,name="VanderPolUnsafeTrajs")
 
     def varyC(initSet,T,unsafe,state,op):
@@ -492,12 +463,6 @@ class VanderPol:
 T=2000
 initSet=([1.25,1.45],[2.25,2.35])
 
-#trajs=VanderPol.getRandomTrajs(initSet,T,K)
-#VanderPol.vizTrajs(trajs)
-#VanderPol.getLog(initSet,T)
-#VanderPol.checkSafety(initSet,T)
-#VanderPol.getValidTrajs(initSet,T,K,None)
-
 
 ########### Results ########### 
 
@@ -505,11 +470,6 @@ unsafe=2.78
 state=1
 op='ge'
 
-#VanderPol.showBehavior(initSet,T)
-#VanderPol.showLogGeneration(initSet,T)
-#VanderPol.showValidTrajs(initSet,T,K=20)
-#VanderPol.checkSafety(initSet,T,unsafe,state,op)
-#VanderPol.varyC(initSet,T,unsafe,state,op)
 
 
 

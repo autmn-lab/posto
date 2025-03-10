@@ -49,7 +49,6 @@ class Jet:
             y_init_rand=random.uniform(initSet[1][0], initSet[1][1])
             traj=Jet.getTraj((x_init_rand,y_init_rand),T)
             trajs.append(traj)
-        #Jet.vizTrajs(trajs)
         return trajs
 
     def vizTrajs(trajs,logUn=None,save=False,name="Untitled"):
@@ -63,7 +62,6 @@ class Jet:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
                 p = plt.Rectangle((lg[0][0][0], lg[0][1][0]), wd, ht, facecolor='none', edgecolor='black',linewidth=0.4,alpha=0.5)
                 ax.add_patch(p)
                 art3d.pathpatch_2d_to_3d(p, z=lg[1], zdir="z")
@@ -91,7 +89,6 @@ class Jet:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
                 p = plt.Rectangle((lg[0][0][0], lg[0][1][0]), wd, ht, facecolor='none', edgecolor='black',linewidth=0.4,alpha=0.5)
                 ax.add_patch(p)
                 art3d.pathpatch_2d_to_3d(p, z=lg[1], zdir="z")
@@ -120,7 +117,6 @@ class Jet:
 
         t=list(range(len(trajsVal[0])))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -132,8 +128,6 @@ class Jet:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd,alpha=0.6)
 
         if unsafe!=None:
@@ -151,7 +145,6 @@ class Jet:
 
         t=list(range(len(trajsVal[0])))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -167,8 +160,6 @@ class Jet:
             for lg in logUn:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
 
         if unsafe!=None:
@@ -189,7 +180,6 @@ class Jet:
         else:
             t=list(range(len(unsafeTrajs[0])))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -205,16 +195,12 @@ class Jet:
             for lg in safeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
         
         if unsafeSamps!=None:
             for lg in unsafeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='brown',linewidth=lnWd)
 
         p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
@@ -231,7 +217,6 @@ class Jet:
 
         t=list(range(T))
 
-        #print(t)
         plt.xlabel("Time",fontsize=20,fontweight='bold')
         plt.ylabel("State-"+str(state),fontsize=20,fontweight='bold')
 
@@ -239,16 +224,12 @@ class Jet:
             for lg in safeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='black',linewidth=lnWd)
         
         if unsafeSamps!=None:
             for lg in unsafeSamps:
                 wd=abs(lg[0][0][1]-lg[0][0][0])
                 ht=abs(lg[0][1][1]-lg[0][1][0])
-                #print(wd,ht)
-                #print([lg[0][0][0], lg[0][0][1]],[lg[1],lg[1]])
                 p = plt.plot([lg[1],lg[1]],[lg[0][state][0], lg[0][state][1]], color='brown',linewidth=lnWd)
 
         p = plt.plot(t, [unsafe]*len(t),color='red',linewidth=lnWd,linestyle='dashed')
@@ -268,11 +249,6 @@ class Jet:
         Jet.vizTrajs(trajs,log[0])
 
     def getValidTrajs(initSet,T,K,logUn):
-        #trajsL=Jet.getRandomTrajs(initSet,T,1)
-        #logger=GenLog(trajsL[0])
-        #logUn=logger.genLog()[0]
-        #print(logUn[0][0])
-        #ts=time.time()
         totTrajs=0
         valTrajObj=TrajValidity(logUn)
         valTrajs=[]
@@ -283,10 +259,6 @@ class Jet:
             valTrajs=valTrajs+valTrajsIt
             if len(valTrajs)>=K:
                 break
-        #ts=time.time()-ts
-        #print("Time: ",ts)
-        #Jet.vizTrajsVal(valTrajs[:5],inValTrajsIt[:5],logUn)
-        #Jet.vizTrajsVal2D(valTrajs,logUn)
         print("Total Trajectories Generated: ",totTrajs*100,"; Valid Trajectories: ",len(valTrajs))
         return valTrajs
 
@@ -302,8 +274,7 @@ class Jet:
         validTrajs=Jet.getValidTrajs(initSet,T,K,logUn)
         ts=time.time()-ts
         print("Time taken to generate ", len(validTrajs)," valid trajectories: ",ts)
-        #Jet.vizTrajsVal2D(validTrajs,logUn,unsafe,state)
-
+        
         ts=time.time()
         safeTrajObj=TrajSafety([state,op,unsafe])
         (safeTrajs,unsafeTrajs)=safeTrajObj.getSafeUnsafeTrajs(validTrajs)
@@ -323,7 +294,6 @@ class Jet:
         logger=GenLog(trajsL[0])
         logUn=logger.genLog()[0]
         K=JFB(Bi,ci).getNumberOfSamples()
-        #K=200
         isSafe=True
         totTrajs=0
         valTrajObj=TrajValidity(logUn)
@@ -384,7 +354,6 @@ class Jet:
         logger=GenLog(trajsL[0])
         logUn=logger.genLog()[0]
         K=JFB(B,c).getNumberOfSamples()
-        #K=200
         isSafe=True
         totTrajs=0
         valTrajObj=TrajValidity(logUn)
@@ -425,13 +394,10 @@ class Jet:
             Jet.vizLogsSafeUnsafe2D(T,safeSamps,unsafeSamps,unsafe,state,save=sv,name="JetSafeUnsafeLogs")
         
         if len(unsafeTrajs)>0 and len(safeTrajs)>0:
-            #print("A")
             Jet.vizTrajsSafeUnsafe2D([safeTrajs[0]],[unsafeTrajs[0]],safeSamps,unsafeSamps,unsafe,state,save=sv,name="JetSafeUnsafeTrajs")
         elif len(safeTrajs)>0 and len(unsafeTrajs)==0:
-            #print("B")
             Jet.vizTrajsVal2D(safeTrajs,logUn,unsafe,state,save=sv,name="JetSafeTrajs")
         elif len(unsafeTrajs)>0:
-            #print("C")
             Jet.vizTrajsVal2D(unsafeTrajs,logUn,unsafe,state,save=True,name="JetUnsafeTrajs")
 
 
@@ -498,13 +464,7 @@ y_init=0.8
 T=2000
 
 initState=(x_init,y_init)
-#initSet=([0.8,1.2],[0.8,1.2])
-#initSet=([0.8,0.9],[0.8,0.9])
 initSet=([0.8,1],[0.8,1])
-#Jet.getValidTrajs(initSet,T,K)
-#Jet.getRandomTrajs(initSet,T,5)
-#Jet.getLog(initSet,T)
-#Jet.checkSafety(initSet,T)
 
 ########### Results ########### 
 
