@@ -14,7 +14,7 @@ With the increasing autonomous capabilities of cyber-physical systems, the compl
 
 - [`Python 3.9.x`](https://www.python.org/)
 
-  - To install this in Ubuntu, one can follow the following steps (note: this step requires the user to have `sudo` priviledges):
+  - To install this on Ubuntu, one can follow the following steps (note: this step requires the user to have `sudo` priviledges):
 
   - ```bash
     sudo apt update
@@ -24,13 +24,13 @@ With the increasing autonomous capabilities of cyber-physical systems, the compl
 - [`NumPy`](https://numpy.org/)
 
   - ```bash
-    pip install numpy scipy
+    pip install numpy
     ```
 
 - [`SciPy`](https://scipy.org/)
 
   - ```bash
-    pip install scipy tqdm
+    pip install tqdm
     ```
 
 - [`mpmath`](https://mpmath.org/)
