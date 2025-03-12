@@ -60,7 +60,7 @@ With the increasing autonomous capabilities of cyber-physical systems, the compl
     python -c "import numpy, scipy, mpmath, tqdm, mpl_toolkits; print('All dependencies installed successfully')"
     ```
 
-  * _If all the dependencies are correctly installed, the above command should run without any error, and display `All dependencies installed successfully!` in the terminal._
+  * _If all the dependencies are correctly installed, the above command should run without any error, and display `All dependencies installed successfully` in the terminal._
 
 ### Downloading the tool
 
