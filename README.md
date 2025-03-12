@@ -64,9 +64,11 @@ With the increasing autonomous capabilities of cyber-physical systems, the compl
 
 ### Downloading the tool
 
-1. Download the repository to your desired location `/my/location/`:
+1. Download the repository to your desired location `/my/location/`
 
-2. Once the repository is downloaded, please open `~/.bashrc`, and add the line `export MNTR_BB_ROOT_DIR=/my/location/monitor-bb/`, mentioned in the following steps:
+2. Once the repository is downloaded, the user needs to set the variable `MNTR_BB_ROOT_DIR` to `/my/location`. To do, we recommened adding this to `bashrc` (see step 2.1). For users who do not wish to add it to their `bashrc` can set the variable each time they open the terminal session to run the tool (see step 2.2). Users choosing step 2.2 are gently reminded to perform this step every time they intend to run the rool.
+
+4. Once the repository is downloaded, please open `~/.bashrc`, and add the line `export MNTR_BB_ROOT_DIR=/my/location/monitor-bb/`, mentioned in the following steps:
 
    1. ```shell
       vi ~/.baschrc
