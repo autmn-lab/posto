@@ -30,7 +30,7 @@ With the increasing autonomous capabilities of cyber-physical systems, the compl
 - [`SciPy`](https://scipy.org/)
 
   - ```bash
-    pip install tqdm
+    pip install scipy
     ```
 
 - [`mpmath`](https://mpmath.org/)
@@ -66,19 +66,28 @@ With the increasing autonomous capabilities of cyber-physical systems, the compl
 
 1. Download the repository to your desired location `/my/location/`
 
-2. Once the repository is downloaded, the user needs to set the variable `MNTR_BB_ROOT_DIR` to `/my/location`. To do, we recommened adding this to `bashrc` (see step 2.1). For users who do not wish to add it to their `bashrc` can set the variable each time they open the terminal session to run the tool (see step 2.2). Users choosing step 2.2 are gently reminded to perform this step every time they intend to run the rool.
+2. Once the repository is downloaded, the user needs to set the variable `MNTR_BB_ROOT_DIR` to `/my/location`. To do so, we recommend adding this to `bashrc` (see **Step 2.1**). For users who do not wish to add it to their `bashrc`, can set the variable each time they open the terminal session to run the tool (see **Step 2.2**). Users choosing step 2.2 are gently reminded to perform this step every time they intend to run the tool.
 
-4. Once the repository is downloaded, please open `~/.bashrc`, and add the line `export MNTR_BB_ROOT_DIR=/my/location/monitor-bb/`, mentioned in the following steps:
+   1. ***[Recommended]*** Once the repository is downloaded, please open `~/.bashrc`, and add the line `export MNTR_BB_ROOT_DIR=/my/location/monitor-bb/`, mentioned in the following steps:
 
-   1. ```shell
-      vi ~/.baschrc
-      ```
+      1. ```shell
+         vi ~/.baschrc
+         ```
 
-   2. Once `.bashrc` is opened, please add the location, where the tool was downloaded, to a path variable `MNTR_BB_ROOT_DIR` (This step is crucial to run the tool):
+      2. Once `.bashrc` is opened, please add the location, where the tool was downloaded, to a path variable `MNTR_BB_ROOT_DIR` (This step is crucial to run the tool):
+
+         1. ```shell
+            export MNTR_BB_ROOT_DIR=/my/location/monitor-bb/
+            ```
+
+   2. *[Alternate Approach]* Run this command every time a new terminal session is opened to run the tool:
 
       1. ```shell
          export MNTR_BB_ROOT_DIR=/my/location/monitor-bb/
          ```
+
+         
+
 
 ## Artifact Evaluation
 
