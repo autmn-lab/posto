@@ -1,5 +1,6 @@
 import os,sys,copy
 import time
+import ast
 
 PROJECT_ROOT = os.environ['MNTR_BB_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
@@ -348,57 +349,88 @@ class Jet:
             plt.show()
         plt.clf()
 
-    def checkSafety(initSet,T,unsafe,state,op):
-        ts=time.time()
-        trajsL=Jet.getRandomTrajs(initSet,T,1)
-        logger=GenLog(trajsL[0])
-        logUn=logger.genLog()[0]
-        K=JFB(B,c).getNumberOfSamples()
-        isSafe=True
-        totTrajs=0
-        valTrajObj=TrajValidity(logUn)
-        valTrajs=[]
-        safeTrajs=[]
-        unsafeTrajs=[]
-        safeTrajObj=TrajSafety([state,op,unsafe])
-        (safeSamps,unsafeSamps)=safeTrajObj.getSafeUnsafeLog(logUn)
-        if len(unsafeSamps)==0 or False:
-            while len(valTrajs)<=K:
-                trajs=Jet.getRandomTrajs(logUn[0][0],T,100)
-                totTrajs+=1
-                valTrajsIt,inValTrajsIt=valTrajObj.getValTrajs(trajs)
-                print(totTrajs*100,len(valTrajs))
-                # Check safety of valTrajsIt
-                (safeTrajs,unsafeTrajs)=safeTrajObj.getSafeUnsafeTrajs(valTrajsIt)
-                if len(unsafeTrajs)>0:
-                    isSafe=False
-                    break
-                ############################
+#CHANGES MADE 
 
-                valTrajs=valTrajs+valTrajsIt
-                if len(valTrajs)>=K:
+    def generateLog(init_set, T, log_path):
+        
+        trajsL = Jet.getRandomTrajs(init_set, T, 1)
+        logger = GenLog(trajsL[0])
+        logUn=logger.genLog()[0]
+
+        os.makedirs(os.path.dirname(log_path) or ".", exist_ok=True)
+        with open(log_path, "w") as f:
+            for box, t in logUn:
+                x_lo, x_hi = box[0]
+                y_lo, y_hi = box[1]
+                f.write(f"t={int(t)}: [[{x_lo:.6f}, {x_hi:.6f}], [{y_lo:.6f}, {y_hi:.6f}]]\n")
+
+
+    def readLog(log_path):
+        
+        logUn = []
+        with open(log_path, "r") as f:
+            for line in f:
+                # Each line in the log looks like: t=0: [[x_lo,x_hi],[y_lo,y_hi]]
+                t_part, box_part = line.strip().split(":")
+                t = int(t_part.split("=")[1])
+                # Use ast.literal_eval to safely parse the box lists
+                box = ast.literal_eval(box_part.strip())
+                logUn.append((box, t))
+        return logUn
+
+    def checkSafety(log_path, T, unsafe, state, op):
+
+        ts = time.time()
+        logUn = Jet.readLog(log_path)
+
+        K = JFB(B, c).getNumberOfSamples()
+        isSafe = True
+        totTrajs = 0
+        valTrajObj = TrajValidity(logUn)
+        valTrajs = []
+        safeTrajs = []
+        unsafeTrajs = []
+        safeTrajObj = TrajSafety([state, op, unsafe])
+
+        (safeSamps, unsafeSamps) = safeTrajObj.getSafeUnsafeLog(logUn)
+
+        if len(unsafeSamps) == 0 or False:
+            # Generate random trajectories from the lower-left corner of the first box
+            while len(valTrajs) <= K:
+                trajs = Jet.getRandomTrajs(logUn[0][0], T, 100)
+                totTrajs += 1
+                valTrajsIt, inValTrajsIt = valTrajObj.getValTrajs(trajs)
+                print(totTrajs * 100, len(valTrajs))
+                # Check safety of valTrajsIt
+                (safeTrajs, unsafeTrajs) = safeTrajObj.getSafeUnsafeTrajs(valTrajsIt)
+                if len(unsafeTrajs) > 0:
+                    isSafe = False
+                    break
+                # accumulate valid trajectories
+                valTrajs = valTrajs + valTrajsIt
+                if len(valTrajs) >= K:
                     break
         else:
-            isSafe=False
-        
-        ts=time.time()-ts
-        print("Time Taken: ",ts)
-        print("Safety: ",isSafe)
-        print("[Trajs] Safe, Unsafe: ",len(safeTrajs),len(unsafeTrajs))
-        print("[Log] Safe, Unsafe: ",len(safeSamps),len(unsafeSamps))
-        print("Total Trajectories Generated: ",totTrajs*100,"; Valid Trajectories: ",len(valTrajs))
+            isSafe = False
 
-        sv=False
+        ts = time.time() - ts
+        print("Time Taken: ", ts)
+        print("Safety: ", isSafe)
+        print("[Trajs] Safe, Unsafe: ", len(safeTrajs), len(unsafeTrajs))
+        print("[Log] Safe, Unsafe: ", len(safeSamps), len(unsafeSamps))
+        print("Total Trajectories Generated: ", totTrajs * 100, "; Valid Trajectories: ", len(valTrajs))
 
-        if len(unsafeSamps)>0:
-            Jet.vizLogsSafeUnsafe2D(T,safeSamps,unsafeSamps,unsafe,state,save=sv,name="JetSafeUnsafeLogs")
-        
-        if len(unsafeTrajs)>0 and len(safeTrajs)>0:
-            Jet.vizTrajsSafeUnsafe2D([safeTrajs[0]],[unsafeTrajs[0]],safeSamps,unsafeSamps,unsafe,state,save=sv,name="JetSafeUnsafeTrajs")
-        elif len(safeTrajs)>0 and len(unsafeTrajs)==0:
-            Jet.vizTrajsVal2D(safeTrajs,logUn,unsafe,state,save=sv,name="JetSafeTrajs")
-        elif len(unsafeTrajs)>0:
-            Jet.vizTrajsVal2D(unsafeTrajs,logUn,unsafe,state,save=True,name="JetUnsafeTrajs")
+        # Plotting logic remains unchanged
+        sv = False
+        if len(unsafeSamps) > 0:
+            Jet.vizLogsSafeUnsafe2D(T, safeSamps, unsafeSamps, unsafe, state, save=sv, name="JetSafeUnsafeLogs")
+        if len(unsafeTrajs) > 0 and len(safeTrajs) > 0:
+            Jet.vizTrajsSafeUnsafe2D([safeTrajs[0]], [unsafeTrajs[0]], safeSamps, unsafeSamps,
+                                    unsafe, state, save=sv, name="JetSafeUnsafeTrajs")
+        elif len(safeTrajs) > 0 and len(unsafeTrajs) == 0:
+            Jet.vizTrajsVal2D(safeTrajs, logUn, unsafe, state, save=sv, name="JetSafeTrajs")
+        elif len(unsafeTrajs) > 0:
+            Jet.vizTrajsVal2D(unsafeTrajs, logUn, unsafe, state, save=True, name="JetUnsafeTrajs")
 
 
     def showBehavior(initSet,T):
@@ -450,28 +482,20 @@ class Jet:
         Jet.vizVaryC(cList,sList,tList,save=True,name="JetVaryC")
 
 
+if __name__ == "__main__":
+    x_init=0.8
+    y_init=0.8
+    T=2000
+
+    initState=(x_init,y_init)
+    initSet=([0.8,1],[0.8,1])
+
+    ########### Results ########### 
+
+    unsafe=-0.10
+    state=0
+    op='le'
 
 
 
-
-
-    
-
-
-
-x_init=0.8
-y_init=0.8
-T=2000
-
-initState=(x_init,y_init)
-initSet=([0.8,1],[0.8,1])
-
-########### Results ########### 
-
-unsafe=-0.10
-state=0
-op='le'
-
-
-
-Jet.checkSafety(initSet,T,unsafe,state,op)
+    Jet.checkSafety(initSet,T,unsafe,state,op)
