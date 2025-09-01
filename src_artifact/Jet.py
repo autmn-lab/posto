@@ -54,6 +54,11 @@ class Jet:
 
     def vizTrajs(trajs,logUn=None,save=False,name="Untitled"):
 
+        if VIZ == False:
+            print(f"{msg.WARNING}[WARN]{msg.ENDC} Graphical visualization disabled. "
+            f"Set {msg.BOLD}VIZ=True{msg.ENDC} to enable.")
+            return
+
         ax = plt.axes(projection='3d')
         ax.set_xlabel('x',fontsize=20,fontweight='bold')
         ax.set_ylabel('y',fontsize=20,fontweight='bold')
@@ -80,6 +85,11 @@ class Jet:
         plt.clf()
         
     def vizTrajsVal(trajsVal,trajsInVal,logUn=None,save=False,name="Untitled"):
+
+        if VIZ == False:
+            print(f"{msg.WARNING}[WARN]{msg.ENDC} Graphical visualization disabled. "
+            f"Set {msg.BOLD}VIZ=True{msg.ENDC} to enable.")
+            return
 
         ax = plt.axes(projection='3d')
         ax.set_xlabel('x',fontsize=20,fontweight='bold')
@@ -114,6 +124,11 @@ class Jet:
 
     def vizTrajsVal2D(trajsVal,logUn=None,unsafe=0.0,state=0,save=False,name="Untitled"):
 
+        if VIZ == False:
+            print(f"{msg.WARNING}[WARN]{msg.ENDC} Graphical visualization disabled. "
+            f"Set {msg.BOLD}VIZ=True{msg.ENDC} to enable.")
+            return
+
         lnWd=2
 
         t=list(range(len(trajsVal[0])))
@@ -141,6 +156,11 @@ class Jet:
         plt.clf()
 
     def vizTrajsValInVal2D(trajsVal,inValTrajs,logUn=None,unsafe=None,state=0,save=False,name="Untitled"):
+
+        if VIZ == False:
+            print(f"{msg.WARNING}[WARN]{msg.ENDC} Graphical visualization disabled. "
+            f"Set {msg.BOLD}VIZ=True{msg.ENDC} to enable.")
+            return
 
         lnWd=2
 
@@ -173,6 +193,11 @@ class Jet:
         plt.clf()
 
     def vizTrajsSafeUnsafe2D(safeTrajs,unsafeTrajs,safeSamps,unsafeSamps,unsafe=0.0,state=0,save=False,name="Untitled"):
+
+        if VIZ == False:
+            print(f"{msg.WARNING}[WARN]{msg.ENDC} Graphical visualization disabled. "
+            f"Set {msg.BOLD}VIZ=True{msg.ENDC} to enable.")
+            return
 
         lnWd=2
 
@@ -213,6 +238,11 @@ class Jet:
         plt.clf()
 
     def vizLogsSafeUnsafe2D(T,safeSamps,unsafeSamps,unsafe=0.0,state=0,save=False,name="Untitled"):
+
+        if VIZ == False:
+            print(f"{msg.WARNING}[WARN]{msg.ENDC} Graphical visualization disabled. "
+            f"Set {msg.BOLD}VIZ=True{msg.ENDC} to enable.")
+            return
 
         lnWd=2
 
@@ -331,6 +361,12 @@ class Jet:
         return (ts,isSafe)
         
     def vizVaryC(cList,sList,tList,save=False,name="Untitled"):
+
+        if VIZ == False:
+            print(f"{msg.WARNING}[WARN]{msg.ENDC} Graphical visualization disabled. "
+            f"Set {msg.BOLD}VIZ=True{msg.ENDC} to enable.")
+            return
+
         plt.xlabel(r'$c$',fontsize=20,fontweight = 'bold')
         plt.ylabel(r'Time taken',fontsize=20,fontweight = 'bold')
         L=len(cList)
@@ -350,6 +386,7 @@ class Jet:
         plt.clf()
 
 #CHANGES MADE 
+
 
     def generateLog(init_set, T, log_path):
         
@@ -480,6 +517,14 @@ class Jet:
         print(tList)
         print(sList)
         Jet.vizVaryC(cList,sList,tList,save=True,name="JetVaryC")
+
+
+
+
+
+
+
+    
 
 
 if __name__ == "__main__":
